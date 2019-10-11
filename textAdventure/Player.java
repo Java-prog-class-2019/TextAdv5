@@ -1,0 +1,5 @@
+package textAdventure;
+
+class Player {
+
+}

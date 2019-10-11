@@ -1,5 +1,10 @@
 package textAdventure;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
+
 /* A skeleton program for a text adventure game */
 /* some other parts, like rooms, will be explained in class */
 
@@ -10,8 +15,8 @@ public class AdventureMain {
 	//instance variables
 	//ArrayList<Room> roomList = new ArrayList<Room>();
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
-	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
-	ArrayList<String> inventory = new ArrayList<String>();
+	//HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
+	//ArrayList<String> inventory = new ArrayList<String>();
 	String currentRoom;
 	Player player;
 	
@@ -36,7 +41,7 @@ public class AdventureMain {
 			command = getCommand();
 
 			playing = parseCommand(command);
-
+			System.out.println("== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//check to see if the player has won the game
@@ -50,7 +55,7 @@ public class AdventureMain {
 	void setup() {
 		Room.setupRooms(roomList);
 		// ... more stuff ...
-		currentRoom = "clearing";
+		currentRoom = "basement1";
 	}
 
 	String getCommand() {
@@ -89,6 +94,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
+		String word1 = words[0];
 
 		/***** MAIN PROCESSING *****/
 		switch(word1) {
@@ -102,25 +108,25 @@ public class AdventureMain {
 				return false;
 			}			
 		case "n": case "s": case "w": case "e": case "u": case "d":
-		case "north": case "south": case "west": case "east": case "up": case "down":sep
-			moveToRoom(word1.charAt(0));
+		case "north": case "south": case "west": case "east": case "up": case "down":
+			moveToRoom(word1.charAt(0));	
 			break;
 		case "i": case "inventory":
-			showInventory();
+	//		showInventory();
 			break;
 		case "sleep":
-			sleep();			
+	//		sleep();			
 			break;	
 		case "help":
-			printHelp();
+	//		printHelp();
 			break;
 			
 		/**** two word commands ****/		
 		case "read":
-			readObject(word2);
+	//		readObject(word2);
 			break;
 		case "eat":
-			eatItem(word2);
+	//		eatItem(word2);
 			break;		
 			
 		/**** SPECIAL COMMANDS ****/
@@ -133,5 +139,19 @@ public class AdventureMain {
 	}	
 
 	//tons of other methods go here ...		
+	void lookAtRoom(boolean x) {
+		String text = roomList.get(currentRoom).descr;
+		System.out.println(text);
+	}
+	
+	void moveToRoom(char c) {
+		Room r = roomList.get(currentRoom);
+		
+		if (c == 'n') {			
+			if (r.n != null) currentRoom = r.n; 
+		}
+		if (c == 's') currentRoom = r.s;
+		lookAtRoom(true);
+	}
 	
 }
