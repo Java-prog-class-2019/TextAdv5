@@ -147,9 +147,8 @@ public class AdventureMain {
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
 		
-		if (c == 'n') {			
-			if (r.n != null) currentRoom = r.n; 
-		}
+		if (c == 'n' && r.n != null) currentRoom = r.n; 
+		
 		if (c == 's') currentRoom = r.s;
 		lookAtRoom(true);
 	}
