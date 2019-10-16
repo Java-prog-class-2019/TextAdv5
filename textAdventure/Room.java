@@ -19,14 +19,14 @@ class Room {
 	}
 	
 	static void setupRooms(HashMap<String,Room> roomList) {
-		Room r = new Room("A dark basement", 
-				"You are in a dark basement. \nThere is a dirty window that allows a little light in. There is a desk here.");
-		r.n = "tunnel";
-		roomList.put("basement1", r);
+		Room r = new Room("cellblock", 
+				"You are in your cell. \nThere is a dirty window that allows a little light in. There is a desk here.");
+		r.n = "hallway";
+		roomList.put("cellblock", r);
 		
-		r = new Room("A dark tunnel", 
-				"You are in a tunnel that twists as it goes downwards...");
-		r.s = "basement1";
+		r = new Room("hallway", 
+				"You are in a hallway that hass an intersection");
+		r.s = "cellblock";
 		roomList.put("tunnel", r);
 	}
 }

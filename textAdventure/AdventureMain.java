@@ -15,7 +15,7 @@ public class AdventureMain {
 	//instance variables
 	//ArrayList<Room> roomList = new ArrayList<Room>();
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
-	//HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
+	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
 	//ArrayList<String> inventory = new ArrayList<String>();
 	String currentRoom;
 	Player player;
@@ -54,9 +54,9 @@ public class AdventureMain {
 
 	void setup() {
 		Room.setupRooms(roomList);
-		Item.setUpItems(null, roomList);
+		Item.setUpItems(itemList, roomList);
 		// ... more stuff ...
-		currentRoom = "basement1";
+		currentRoom = "cellblock";
 
 
 	}

@@ -12,15 +12,25 @@ class Item {
 		descr = s2;
 	}
 	static void setUpItems(HashMap<String,Item> itemList, HashMap<String,Room> roomList) {
-		Item z = new Item("Keycard", "A keycard that can be used to unlock a door.");
+		Item key = new Item("Key", "A key that can be used to unlock your cellblock.");
 		
-		Item z2 = new Item("Bomb", "IF it goes off the game is over now.");
+		Item sleepingDust = new Item("Sleeping Dust", "A magic sleeping dust that can put a person to sleep.");
 		
-//		z.descrRoom = "There is a card inside the guard's back pocket.";	//this is displayed along with the room description when you look at the room.
-//		itemList.put("keycard",z);						//this is the true (hashmap) name of the item. It's never displayed.
-		Room r = roomList.get("basement1");
-		r.items.add(z);	//and here the item is added to the specific room that you want it in.
-		r.items.add(z2);
+		Item axe = new Item("Axe", "An shiny axe.");
+		
+		Item clothes = new Item("Clothes","A change of clothes. Strangely, it is your size...");
+		
+		Item chair = new Item("Chair", "A well crafted chair that looks very durable.");
+		
+		Item wireClippers = new Item("Wire Clippers", "A wire clippers.");
+		
+		Item keycard = new Item("Keycard", "A keycard that can be used to unlock a door.");
+
+		Room r = roomList.get("cellblock");
+		r.items.add(key);	//and here the item is added to the specific room that you want it in.
+		
+//		Room r1 = roomList.get("hallway");
+//		r1.items.add(wireClippers);
 		
 	}
 	
