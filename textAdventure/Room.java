@@ -59,5 +59,26 @@ class Room {
 		r.e="hallway7";
 		r.w="hallway2";
 		roomList.put("hallway5", r);
+		//hallway6
+		r=new Room ("Hallway", "There are two rooms nearbye; one room is to the North and one is to the south"+
+				"To the west and east is more hallway");
+		r.w="hallway8";
+		r.e="hallway4";
+		r.n="laundry-room";
+		r.s="cell2";
+		roomList.put("hallway6", r);
+		//hallway7
+		r=new Room("Hallway", "There are two rooms nearbye; one room is to the East and one room is to the South. "+
+				"To the west is more hallway");
+		r.e="SecurityCamera";
+		r.w="hallway5";
+		r.s="cell3";
+		roomList.put("hallway7", r);
+		//hallway8
+		r=new Room("Hallway", "To the east of you is more hallway. To the West of you is a locked gate which blocks your way.");
+		r.e="hallway6";
+		r.w="hallway9";
+		roomList.put("hallway8", r);
+		
 	}
 }
