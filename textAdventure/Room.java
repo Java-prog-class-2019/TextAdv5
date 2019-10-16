@@ -1,5 +1,6 @@
 package textAdventure;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 class Room {
@@ -9,6 +10,7 @@ class Room {
 	//exits
 	String n,s,e,w,u,d;
 	//items in an arraylist
+	ArrayList<Item> items = new ArrayList<Item>(); 
 	
 	//constructor
 	Room(String s1, String s2) {

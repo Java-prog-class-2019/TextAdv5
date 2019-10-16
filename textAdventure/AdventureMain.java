@@ -19,7 +19,7 @@ public class AdventureMain {
 	//ArrayList<String> inventory = new ArrayList<String>();
 	String currentRoom;
 	Player player;
-	
+
 	int turns = 0;
 
 	public static void main(String[]args){
@@ -32,7 +32,7 @@ public class AdventureMain {
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
-		
+
 		lookAtRoom(true); //display information about the current room
 
 		/***** MAIN GAME LOOP *****/
@@ -45,7 +45,7 @@ public class AdventureMain {
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//check to see if the player has won the game
-			
+
 		}
 
 		// does anything need to be done after th emain game loop exits?
@@ -54,8 +54,11 @@ public class AdventureMain {
 
 	void setup() {
 		Room.setupRooms(roomList);
+		Item.setUpItems(null, roomList);
 		// ... more stuff ...
 		currentRoom = "basement1";
+
+
 	}
 
 	String getCommand() {
@@ -66,26 +69,26 @@ public class AdventureMain {
 		return text;
 	}
 
-	
+
 	boolean parseCommand(String text) {
 
 		/***** PREPROCESSING *****/
 		//P1. 
 		text = text.toLowerCase().trim();	//the complete string BEFORE parsing
-		
+
 
 		//handle situation where no words entered ...
 
-		
+
 		//P2. word replacement
 		text = text.replaceAll(" into ", " in ");
 		text = text.replaceAll(" rocks", " rock");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
-		
+
 		String words[] = text.split(" ");
-		
+
 		//P3. remove all instances of "THE"
 		ArrayList<String> wordlist = new ArrayList<String>(Arrays.asList(words));		//array list of words
 		for(int i=0; i< wordlist.size(); i++) {
@@ -98,7 +101,7 @@ public class AdventureMain {
 
 		/***** MAIN PROCESSING *****/
 		switch(word1) {
-		
+
 		/**** one word commands ****/
 		case "quit":
 			System.out.print("Do you really want to quit the game? ");
@@ -112,25 +115,25 @@ public class AdventureMain {
 			moveToRoom(word1.charAt(0));	
 			break;
 		case "i": case "inventory":
-	//		showInventory();
+			//		showInventory();
 			break;
 		case "sleep":
-	//		sleep();			
+			//		sleep();			
 			break;	
 		case "help":
-	//		printHelp();
+			//		printHelp();
 			break;
-			
-		/**** two word commands ****/		
+
+			/**** two word commands ****/		
 		case "read":
-	//		readObject(word2);
+			//		readObject(word2);
 			break;
 		case "eat":
-	//		eatItem(word2);
+			//		eatItem(word2);
 			break;		
-			
-		/**** SPECIAL COMMANDS ****/
-		// ...		
+
+			/**** SPECIAL COMMANDS ****/
+			// ...		
 
 		default: 
 			System.out.println("Sorry, I don't understand that command");
@@ -142,15 +145,23 @@ public class AdventureMain {
 	void lookAtRoom(boolean x) {
 		String text = roomList.get(currentRoom).descr;
 		System.out.println(text);
+
+		//list items in room
+		if (roomList.get(currentRoom).items.size() > 0 ) {
+			System.out.println("The room contains:");
+		}
+		for (Item item : roomList.get(currentRoom).items) {
+			System.out.println(item.name + ": " + item.descr);
+		}
 	}
-	
+
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
-		
+
 		if (c == 'n' && r.n != null) currentRoom = r.n; 
-		
-		if (c == 's') currentRoom = r.s;
+
+		if (c == 's' && r.s != null) currentRoom = r.s;
 		lookAtRoom(true);
 	}
-	
+
 }
