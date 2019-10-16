@@ -38,10 +38,26 @@ class Room {
 		r.w="hallway4";
 		roomList.put("hallway1", r);
 		//hallway 2
-		r = new Room ("Hallway", "You are in a long hallway which runs East to West");
+		r = new Room ("Hallway", "You are in a long hallway which runs East to West." +
+				" There is a guard in the hallway to the east");
 		r.w="hallway1";
 		r.e="hallway5";
 		roomList.put("hallway2", r);
-		
+		//hallway 3
+		r = new Room ("Hallway", "North of you is a locked gate. South of you is your cell");
+		r.n="cafeteria";
+		r.s="hallway1";
+		roomList.put("hallway3", r);
+		//hallway 4
+		r= new Room ("Hallway", "Your are in a long hallway that runs East to West");
+		r.e="hallway1";
+		r.w="hallway6";
+		roomList.put("hallway4", r);
+		//hallway 5 (contains guard)
+		r=new Room ("Hallway", "You are in a section of hallway which contains an AWAKE guard."+
+				"If you go by him while he's awake you will lose.");
+		r.e="hallway7";
+		r.w="hallway2";
+		roomList.put("hallway5", r);
 	}
 }
