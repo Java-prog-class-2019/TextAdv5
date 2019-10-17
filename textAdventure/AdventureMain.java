@@ -56,9 +56,7 @@ public class AdventureMain {
 		Room.setupRooms(roomList);
 		Item.setUpItems(itemList, roomList);
 		// ... more stuff ...
-		currentRoom = "cellblock";
-
-
+		currentRoom = "cell1";
 	}
 
 	String getCommand() {
@@ -159,8 +157,12 @@ public class AdventureMain {
 		Room r = roomList.get(currentRoom);
 
 		if (c == 'n' && r.n != null) currentRoom = r.n; 
-
-		if (c == 's' && r.s != null) currentRoom = r.s;
+		
+		if (c == 's' && r.s !=null) currentRoom = r.s;
+		if (c == 'e' && r.e != null) currentRoom = r.e; 
+		if (c == 'w' && r.w != null) currentRoom = r.w; 
+		if (c == 'u' && r.u !=null) currentRoom=r.u;
+		if (c == 'd' && r.d !=null) currentRoom=r.d;
 		lookAtRoom(true);
 	}
 
