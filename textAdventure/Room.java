@@ -107,7 +107,6 @@ class Room {
 		roomList.put("cafeteria", r);
 		r=new Room("Excercise Yard","You are in a grassy field. A tall electric fence on the north side of the field separates you from the outside world");
 		r.s="cafeteria";
-		r.n="ElectricFence";
 		roomList.put("ExcerciseYard", r);
 	}
 }
