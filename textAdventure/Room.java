@@ -27,6 +27,7 @@ class Room {
 		r.s = "basement1";
 		roomList.put("tunnel", r);
 		*/
+		//cell1
 		Room r = new Room("Your Cell",
 				"You find yourself in a dingy prison cell. The door out of your cell, which is to the north of you, is locked.");
 		r.n = ("hallway1");
@@ -79,6 +80,36 @@ class Room {
 		r.e="hallway6";
 		r.w="hallway9";
 		roomList.put("hallway8", r);
+		//hallway 9
+		r=new Room("Hallway", "There is a room to the West of you from which you can hear the sound of guard voices."+
+				"You can also see a set of stairs leading down. To the East is a gate.");
+		r.d="stairs";
+		r.w="guard-office";
+		r.e="hallway8";
+		roomList.put("hallway9", r);
+		//cell2
+		r=new Room("Empty Cell","You are in an empty cell. On the floor is a bottle of strange blue powder."); //once we finish the game we want to actually hide the powder in the cell, but not yet
+		r.n="hallway6";
+		roomList.put("cell2", r);
+		//cell3
+		r=new Room("Empty Cell","You are in an empty cell. From the behind the bes you can see something shiny glinting."); //need command like "look in corner". Also do we want to take the word in out of commands as well as the???
+		r.n="hallway7";
+		roomList.put("cell3", r);
+		//Security Room
+		r=new Room("Security Room", "A sound of electricity fills the room and you find yourself looking at a giant computer screen"+
+				"which displays the video feed from the cafeteria."); //can we put the security camera in the cafeteria. If they are in the cafeteria and the camera isn't turned off the player will lose.
+		r.w="hallway7";
+		roomList.put("SecurityRoom", r);
+		//Guard Room - enter this room and you lose
+		r=new Room("Guard Room", "The room is filled with gaurds! YOU LOSE!!!");
+		r.e="hallway9";
+		roomList.put("GuardRoom", r);
+		//Laundry Room - go here to find change of clothes
+		r=new Room("Laundry Room", "There are baskets of laundry everywhere filled with clean guard unifroms.");
+		r.s="hallway6";
+		roomList.put("LaudryRoom", r);
+		
+		
 		
 	}
 }
