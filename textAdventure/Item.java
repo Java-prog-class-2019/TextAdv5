@@ -26,8 +26,8 @@ class Item {
 		
 		Item keycard = new Item("Keycard", "A keycard that can be used to unlock a door.");
 
-		Room r = roomList.get("cellblock");
-		r.items.add(key);	//and here the item is added to the specific room that you want it in.
+		//Room r = roomList.get("cellblock");
+		//r.items.add(key);	//and here the item is added to the specific room that you want it in.
 		
 //		Room r1 = roomList.get("hallway");
 //		r1.items.add(wireClippers);
