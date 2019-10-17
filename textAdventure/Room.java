@@ -1,5 +1,6 @@
 package textAdventure;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 class Room {
@@ -9,6 +10,7 @@ class Room {
 	//exits
 	String n,s,e,w,u,d;
 	//items in an arraylist
+	ArrayList<Item> items = new ArrayList<Item>(); 
 	
 	//constructor
 	Room(String s1, String s2) {
@@ -22,9 +24,9 @@ class Room {
 		r.n = "tunnel";
 		roomList.put("basement1", r);
 		
-		r = new Room("A dark tunnel", 
-				"You are in a tunnel that twists as it goes downwards...");
-		r.s = "basement1";
+		r = new Room("hallway", 
+				"You are in a hallway that hass an intersection");
+		r.s = "cellblock";
 		roomList.put("tunnel", r);
 		*/
 		//cell1
