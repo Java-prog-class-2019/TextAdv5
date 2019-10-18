@@ -155,14 +155,45 @@ public class AdventureMain {
 
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
-
-		if (c == 'n' && r.n != null) currentRoom = r.n; 
 		
-		if (c == 's' && r.s !=null) currentRoom = r.s;
-		if (c == 'e' && r.e != null) currentRoom = r.e; 
-		if (c == 'w' && r.w != null) currentRoom = r.w; 
-		if (c == 'u' && r.u !=null) currentRoom=r.u;
-		if (c == 'd' && r.d !=null) currentRoom=r.d;
+		String message = "You cannot go that way.";
+		
+		//north
+		if (c == 'n' && r.n != null) {
+			currentRoom = r.n;
+		}
+		if(c == 'n' && r.n == null) System.out.println(message);
+		
+		//south
+		if (c == 's' && r.s !=null) {
+			currentRoom = r.s;
+		}
+		if(c == 's' && r.s == null) System.out.println(message);
+		
+		//east
+		if (c == 'e' && r.e != null) {
+			currentRoom = r.e;
+		}
+		if(c == 'e' && r.e == null) System.out.println(message);
+		
+		//west
+		if (c == 'w' && r.w != null) {
+			currentRoom = r.w;
+		}
+		if(c == 'w' && r.w == null) System.out.println(message);
+		
+		//up
+		if (c == 'u' && r.u !=null) {
+			currentRoom=r.u;
+		}
+		if(c == 'u' && r.u == null) System.out.println(message);
+		
+		//down
+		if (c == 'd' && r.d !=null) {
+			currentRoom=r.d;
+		}
+		if(c == 'd' && r.d == null) System.out.println(message);
+		
 		lookAtRoom(true);
 	}
 

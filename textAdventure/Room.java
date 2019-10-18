@@ -105,10 +105,38 @@ class Room {
 		//we want this option for the cafteria if the security camera is turned off
 		//r=new Room("Cafeteria", "There is a security camera, but it is turned off. The room is filled with tables and chairs.");
 		r.s="hallway3";
-		r.n="ExcerciseYard";
+		r.n="ExerciseYard";
 		roomList.put("cafeteria", r);
-		r=new Room("Excercise Yard","You are in a grassy field. A tall electric fence on the north side of the field separates you from the outside world");
+		r=new Room("Exercise Yard","You are in a grassy field. A tall electric fence on the north side of the field separates you from the outside world");
 		r.s="cafeteria";
-		roomList.put("ExcerciseYard", r);
+		roomList.put("ExerciseYard", r);
+		
+		
+		
+		// >>>>>>>>>>>>BASEMENT<<<<<<<<<<<<
+		// stairs
+		r=new Room("Stairs","You are at the bottom of the staircase. There is a dark-lit, dusty storage room east of you.");
+		r.e="storage";
+		r.u="hallway8";
+		roomList.put("stairs", r);
+		
+		r=new Room("Storage room","You are in the storage room. You see a wireclipper on a rusty rack.");
+		r.w="stairs";
+		r.e="panicRoom";
+		r.s="storage2";
+		r.n="electricRoom";
+		roomList.put("storage1", r);
+		
+		r=new Room("A small storage room","You are in a small storage room.");
+		r.n="storage1";
+		roomList.put("storage2", r);
+		
+		r=new Room("Electric room","You are in the electric room. You see a panel of electric wires that control the electric fence.");
+		r.s="storage1";
+		roomList.put("electricRoom", r);
+		
+		r=new Room("Panic room","You are in the panic room. It looks abandoned a long time ago... Who knows why this room even exist!!!");
+		r.w="storage1";
+		roomList.put("panicRoom", r);
 	}
 }
