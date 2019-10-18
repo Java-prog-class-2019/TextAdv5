@@ -32,8 +32,9 @@ class Room {
 		//cell1
 		Room r = new Room("Your Cell",
 				"You find yourself in a dingy prison cell. The door out of your cell, which is to the north of you, is locked.");
-		r.n = ("hallway1");
+		r.n = ("hallway1");		
 		roomList.put("cell1", r);
+		
 		r = new Room ("Hallway", "You find yourself in a dimly lit hallway, which leads North, East, and West.");
 		r.s="cell1";
 		r.n="hallway3";
