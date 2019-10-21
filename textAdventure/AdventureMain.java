@@ -1,5 +1,6 @@
 package textAdventure;
 
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class AdventureMain {
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
 	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
 	//ArrayList<String> inventory = new ArrayList<String>();
+	
 	String currentRoom;
 	Player player;
 
@@ -57,6 +59,11 @@ public class AdventureMain {
 		Item.setUpItems(itemList, roomList);
 		// ... more stuff ...
 		currentRoom = "cell1";
+		player = new Player();
+		//DEBUG
+		
+		Item axe = roomList.get("cell3").items.get(0); //there is only one item in the room, so AXE will be in position 0
+		player.inventory.add(axe);
 	}
 
 	String getCommand() {
@@ -113,7 +120,7 @@ public class AdventureMain {
 			moveToRoom(word1.charAt(0));	
 			break;
 		case "i": case "inventory":
-			//		showInventory();
+				showInventory();
 			break;
 		case "sleep":
 			//		sleep();			
@@ -126,8 +133,8 @@ public class AdventureMain {
 		case "read":
 			//		readObject(word2);
 			break;
-		case "eat":
-			//		eatItem(word2);
+		case "look":
+			lookAtRoom(true);
 			break;		
 
 			/**** SPECIAL COMMANDS ****/
@@ -138,6 +145,14 @@ public class AdventureMain {
 		}
 		return true;
 	}	
+
+	void showInventory() {
+//		System.out.println(player.inventory);
+				
+		for(Item i: player.inventory) {
+		    System.out.println(i.toString());  // Will invoke overrided `toString()` method
+		}
+	}
 
 	//tons of other methods go here ...		
 	void lookAtRoom(boolean x) {
