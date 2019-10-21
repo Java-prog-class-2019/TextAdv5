@@ -131,12 +131,49 @@ public class AdventureMain {
 			System.out.print("look where?");
 			String com = getCommand().toLowerCase();
 			if (com.equals("n") || com.equals("look n")) {
-				System.out.print("There is " + roomList.get(currentRoom).name + " north of you");
+				if (roomList.get(currentRoom).n != null) {
+					String room=roomList.get(currentRoom).n;
+					System.out.print("There is " + roomList.get(room).name + " north of you");
+				}
+				else System.out.println("There is no room north of you.");
 			}
 			if (com.equals("s") || com.equals ("look s")) {
-
+				if (roomList.get(currentRoom).s != null) {
+					String room=roomList.get(currentRoom).s;
+					System.out.print("There is " + roomList.get(room).name + " south of you");
+				}
+				else System.out.println("There is no room south of you.");
+			}
+			if (com.equals("e") || com.equals("look e")) {
+				if (roomList.get(currentRoom).e != null) {
+					String room=roomList.get(currentRoom).e;
+					System.out.print("There is " + roomList.get(room).name + " east of you");
+				}
+				else System.out.println("There is no room east of you.");
+			}
+			if (com.equals("w") || com.equals("look w")) {
+				if (roomList.get(currentRoom).w != null) {
+					String room=roomList.get(currentRoom).w;
+					System.out.print("There is " + roomList.get(room).name + " west of you");
+				}
+				else System.out.println("There is no room west of you.");
+			}
+			if (com.equals("u") || com.equals("look u")) {
+				if (roomList.get(currentRoom).u != null) {
+					String room=roomList.get(currentRoom).u;
+					System.out.print("There is " + roomList.get(room).name + " above you");
+				}
+				else System.out.println("There is no room above you.");
+			}
+			if (com.equals("d") || com.equals("look down")) {
+				if (roomList.get(currentRoom).d != null) {
+					String room=roomList.get(currentRoom).d;
+					System.out.print("There is " + roomList.get(room).name + " below you");
+				}
+				else System.out.println("There is no room below you.");
 			}
 			break;
+			
 		case "take":
 			if (word2 == "") {
 				System.out.print("take what? ");			
