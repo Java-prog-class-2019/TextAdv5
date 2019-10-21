@@ -117,7 +117,7 @@ class Room {
 		// >>>>>>>>>>>>BASEMENT<<<<<<<<<<<<
 		// stairs
 		r=new Room("Stairs","You are at the bottom of the staircase. There is a dark-lit, dusty storage room east of you.");
-		r.e="storage";
+		r.e="storage1";
 		r.u="hallway8";
 		roomList.put("stairs", r);
 		
