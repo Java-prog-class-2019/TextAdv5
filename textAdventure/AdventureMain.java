@@ -43,7 +43,7 @@ public class AdventureMain {
 			command = getCommand();
 
 			playing = parseCommand(command);
-			System.out.println("== " + roomList.get(currentRoom).name + " ==");
+			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//check to see if the player has won the game
@@ -103,6 +103,10 @@ public class AdventureMain {
 		//separate out into word1, word2, etc.
 		// ...
 		String word1 = words[0];
+		String word2 = "";
+		String word3 = "";
+		if (words.length>1)	word2 = words[1];
+		if (words.length>2)	word3 = words[2];
 
 		/***** MAIN PROCESSING *****/
 		switch(word1) {
@@ -126,15 +130,52 @@ public class AdventureMain {
 			//		sleep();			
 			break;	
 		case "help":
-			//		printHelp();
+			System.out.print("North-n, East-e, West-w, Up-u, Down-d");
 			break;
 
 			/**** two word commands ****/		
-		case "read":
-			//		readObject(word2);
-			break;
 		case "look":
-			lookAtRoom(true);
+			System.out.print("look where?");
+			String com = getCommand().toLowerCase();
+			if (com.equals("n") || com.equals("look n")) {
+				System.out.print("There is " + roomList.get(currentRoom).name + " north of you");
+			}
+			if (com.equals("s") || com.equals ("look s")) {
+
+			}
+			break;
+		case "take":
+			if (word2 == "") {
+				System.out.print("take what? ");			
+				String comm = getCommand().toLowerCase().trim();
+				word2 = comm;
+			} else {
+				word2 = word2 + " " + word3;
+			}
+			
+			//does current room contain item
+			// roomList.get(currentRoom).items  < -- this is the item list for the current rooom
+			
+			int numItems = roomList.get(currentRoom).items.size();
+			
+			//find item in the room
+			boolean found = false;
+			for (int i = 0; i < numItems; i++ ) {
+				Item item = roomList.get(currentRoom).items.get(i);
+				
+				//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
+				if (item.name.equalsIgnoreCase(word2)) {
+					//player.inventory.add(item);
+					
+					roomList.get(currentRoom).items.remove(item);
+					System.out.println(word2 + " taken");
+					found = true;
+					break;
+				}
+			}
+			
+			if (!found) System.out.println("There is no " + word2 + " here.");
+			
 			break;		
 
 			/**** SPECIAL COMMANDS ****/
@@ -146,12 +187,9 @@ public class AdventureMain {
 		return true;
 	}	
 
-	void showInventory() {
-//		System.out.println(player.inventory);
-				
-		for(Item i: player.inventory) {
-		    System.out.println(i.toString());  // Will invoke overrided `toString()` method
-		}
+	private void printHelp() {
+		// TODO Auto-generated method stub
+
 	}
 
 	//tons of other methods go here ...		
@@ -170,14 +208,45 @@ public class AdventureMain {
 
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
-
-		if (c == 'n' && r.n != null) currentRoom = r.n; 
 		
-		if (c == 's' && r.s !=null) currentRoom = r.s;
-		if (c == 'e' && r.e != null) currentRoom = r.e; 
-		if (c == 'w' && r.w != null) currentRoom = r.w; 
-		if (c == 'u' && r.u !=null) currentRoom=r.u;
-		if (c == 'd' && r.d !=null) currentRoom=r.d;
+		String message = "You cannot go that way.";
+		
+		//north
+		if (c == 'n' && r.n != null) {
+			currentRoom = r.n;
+		}
+		if(c == 'n' && r.n == null) System.out.println(message);
+		
+		//south
+		if (c == 's' && r.s !=null) {
+			currentRoom = r.s;
+		}
+		if(c == 's' && r.s == null) System.out.println(message);
+		
+		//east
+		if (c == 'e' && r.e != null) {
+			currentRoom = r.e;
+		}
+		if(c == 'e' && r.e == null) System.out.println(message);
+		
+		//west
+		if (c == 'w' && r.w != null) {
+			currentRoom = r.w;
+		}
+		if(c == 'w' && r.w == null) System.out.println(message);
+		
+		//up
+		if (c == 'u' && r.u !=null) {
+			currentRoom=r.u;
+		}
+		if(c == 'u' && r.u == null) System.out.println(message);
+		
+		//down
+		if (c == 'd' && r.d !=null) {
+			currentRoom=r.d;
+		}
+		if(c == 'd' && r.d == null) System.out.println(message);
+		
 		lookAtRoom(true);
 	}
 
