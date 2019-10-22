@@ -1,6 +1,6 @@
 package textAdventure;
 
-import java.awt.event.ItemListener;
+//import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -132,7 +132,7 @@ public class AdventureMain {
 		case "help":
 			System.out.print("North-n, East-e, West-w, Up-u, Down-d");
 			break;
-		case "check":
+		case "check":	//this is the same as "look here"
 			lookAtRoom(true);
 			break;
 			/**** two word commands ****/		
@@ -143,6 +143,12 @@ public class AdventureMain {
 				com = getCommand().toLowerCase();
 			}
 			else com=word2;
+			
+			if (com.equals("here")) {
+				lookAtRoom(true);
+				break;
+			}
+			
 			if (com.equals("n") || com.equals("look n")) {
 				if (roomList.get(currentRoom).n != null) {
 					String room=roomList.get(currentRoom).n;
