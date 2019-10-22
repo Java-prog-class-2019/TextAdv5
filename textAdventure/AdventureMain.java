@@ -221,7 +221,7 @@ public class AdventureMain {
 
 				//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 				if (item.name.equalsIgnoreCase(word2)) {
-					//player.inventory.add(item);
+					player.inventory.add(item);
 
 					roomList.get(currentRoom).items.remove(item);
 					System.out.println(word2 + " taken");
@@ -243,7 +243,7 @@ public class AdventureMain {
 		return true;
 	}	
 
-	 void Addingitems() {
+	 /*void Addingitems() {
 		// TODO Auto-generated method stub
 		 Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
 			player.inventory.add(axe);
@@ -251,7 +251,7 @@ public class AdventureMain {
 			player.inventory.add(key);
 			
 	}
-
+*/
 	private void showInventory() {
 		//System.out.print(Arrays.toString(player.inventory));				
 		if (player.inventory.size() == 0) {
