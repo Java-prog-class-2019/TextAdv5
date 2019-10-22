@@ -130,51 +130,51 @@ public class AdventureMain {
 		case "look":
 			String com="";
 			if (word2=="") {
-			System.out.print("look where?");
-			com = getCommand().toLowerCase();
+				System.out.print("look where?");
+				com = getCommand().toLowerCase();
 			}
 			else com=word2;
 			if (com.equals("n") || com.equals("look n")) {
-			if (roomList.get(currentRoom).n != null) {
-			String room=roomList.get(currentRoom).n;
-			System.out.print("There is " + roomList.get(room).name + " north of you");
-			}
-			else System.out.println("There is no room north of you.");
+				if (roomList.get(currentRoom).n != null) {
+					String room=roomList.get(currentRoom).n;
+					System.out.print("There is " + roomList.get(room).name + " north of you");
+				}
+				else System.out.println("There is no room north of you.");
 			}
 			if (com.equals("s") || com.equals ("look s")) {
-			if (roomList.get(currentRoom).s != null) {
-			String room=roomList.get(currentRoom).s;
-			System.out.print("There is " + roomList.get(room).name + " south of you");
-			}
-			else System.out.println("There is no room south of you.");
+				if (roomList.get(currentRoom).s != null) {
+					String room=roomList.get(currentRoom).s;
+					System.out.print("There is " + roomList.get(room).name + " south of you");
+				}
+				else System.out.println("There is no room south of you.");
 			}
 			if (com.equals("e") || com.equals("look e")) {
-			if (roomList.get(currentRoom).e != null) {
-			String room=roomList.get(currentRoom).e;
-			System.out.print("There is " + roomList.get(room).name + " east of you");
-			}
-			else System.out.println("There is no room east of you.");
+				if (roomList.get(currentRoom).e != null) {
+					String room=roomList.get(currentRoom).e;
+					System.out.print("There is " + roomList.get(room).name + " east of you");
+				}
+				else System.out.println("There is no room east of you.");
 			}
 			if (com.equals("w") || com.equals("look w")) {
-			if (roomList.get(currentRoom).w != null) {
-			String room=roomList.get(currentRoom).w;
-			System.out.print("There is " + roomList.get(room).name + " west of you");
-			}
-			else System.out.println("There is no room west of you.");
+				if (roomList.get(currentRoom).w != null) {
+					String room=roomList.get(currentRoom).w;
+					System.out.print("There is " + roomList.get(room).name + " west of you");
+				}
+				else System.out.println("There is no room west of you.");
 			}
 			if (com.equals("u") || com.equals("look u")) {
-			if (roomList.get(currentRoom).u != null) {
-			String room=roomList.get(currentRoom).u;
-			System.out.print("There is " + roomList.get(room).name + " above you");
-			}
-			else System.out.println("There is no room above you.");
+				if (roomList.get(currentRoom).u != null) {
+					String room=roomList.get(currentRoom).u;
+					System.out.print("There is " + roomList.get(room).name + " above you");
+				}
+				else System.out.println("There is no room above you.");
 			}
 			if (com.equals("d") || com.equals("look down")) {
-			if (roomList.get(currentRoom).d != null) {
-			String room=roomList.get(currentRoom).d;
-			System.out.print("There is " + roomList.get(room).name + " below you");
-			}
-			else System.out.println("There is no room below you.");
+				if (roomList.get(currentRoom).d != null) {
+					String room=roomList.get(currentRoom).d;
+					System.out.print("There is " + roomList.get(room).name + " below you");
+				}
+				else System.out.println("There is no room below you.");
 			}
 		case "take":
 			if (word2 == "") {
@@ -184,31 +184,31 @@ public class AdventureMain {
 			} else {
 				if (word3 != "")	word2 = word2 + " " + word3;
 			}
-			
+
 			//does current room contain item
 			// roomList.get(currentRoom).items  < -- this is the item list for the current rooom
-			
+
 			int numItems = roomList.get(currentRoom).items.size();
 			//System.out.print("=="+word2+);
-			
+
 			//find item in the room
 			boolean found = false;
 			for (int i = 0; i < numItems; i++ ) {
 				Item item = roomList.get(currentRoom).items.get(i);
-				
+
 				//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 				if (item.name.equalsIgnoreCase(word2)) {
 					//player.inventory.add(item);
-					
+
 					roomList.get(currentRoom).items.remove(item);
 					System.out.println(word2 + " taken");
 					found = true;
 					break;
 				}
 			}
-			
+
 			if (!found) System.out.println("There is no " + word2 + " here.");
-			
+
 			break;		
 
 			/**** SPECIAL COMMANDS ****/
@@ -241,45 +241,45 @@ public class AdventureMain {
 
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
-		
+
 		String message = "You cannot go that way.";
-		
+
 		//north
 		if (c == 'n' && r.n != null) {
 			currentRoom = r.n;
 		}
 		if(c == 'n' && r.n == null) System.out.println(message);
-		
+
 		//south
 		if (c == 's' && r.s !=null) {
 			currentRoom = r.s;
 		}
 		if(c == 's' && r.s == null) System.out.println(message);
-		
+
 		//east
 		if (c == 'e' && r.e != null) {
 			currentRoom = r.e;
 		}
 		if(c == 'e' && r.e == null) System.out.println(message);
-		
+
 		//west
 		if (c == 'w' && r.w != null) {
 			currentRoom = r.w;
 		}
 		if(c == 'w' && r.w == null) System.out.println(message);
-		
+
 		//up
 		if (c == 'u' && r.u !=null) {
 			currentRoom=r.u;
 		}
 		if(c == 'u' && r.u == null) System.out.println(message);
-		
+
 		//down
 		if (c == 'd' && r.d !=null) {
 			currentRoom=r.d;
 		}
 		if(c == 'd' && r.d == null) System.out.println(message);
-		
+
 		lookAtRoom(true);
 	}
 
