@@ -19,16 +19,6 @@ class Room {
 	}
 	
 	static void setupRooms(HashMap<String,Room> roomList) {
-		/*Room r = new Room("A dark basement", 
-				"You are in a dark basement. \nThere is a dirty window that allows a little light in. There is a desk here.");
-		r.n = "tunnel";
-		roomList.put("basement1", r);
-		
-		r = new Room("hallway", 
-				"You are in a hallway that hass an intersection");
-		r.s = "cellblock";
-		roomList.put("tunnel", r);
-		*/
 		//cell1
 		Room r = new Room("Your Cell",
 				"You find yourself in a dingy prison cell. The door out of your cell, which is to the north of you, is locked.");
@@ -68,13 +58,13 @@ class Room {
 				"To the west and east is more hallway");
 		r.w="hallway8";
 		r.e="hallway4";
-		r.n="laundry-room";
+		r.n="LaundryRoom";
 		r.s="cell2";
 		roomList.put("hallway6", r);
 		//hallway7
 		r=new Room("Hallway", "There are two rooms nearbye; one room is to the East and one room is to the South. "+
 				"To the west is more hallway");
-		r.e="SecurityCamera";
+		r.e="SecurityRoom";
 		r.w="hallway5";
 		r.s="cell3";
 		roomList.put("hallway7", r);
@@ -87,7 +77,7 @@ class Room {
 		r=new Room("Hallway", "There is a room to the West of you from which you can hear the sound of guard voices."+
 				"You can also see a set of stairs leading down. To the East is a gate.");
 		r.d="stairs";
-		r.w="guard-office";
+		r.w="GuardRoom";
 		r.e="hallway8";
 		roomList.put("hallway9", r);
 		//cell2
@@ -110,9 +100,44 @@ class Room {
 		//Laundry Room - go here to find change of clothes
 		r=new Room("Laundry Room", "There are baskets of laundry everywhere filled with clean guard unifroms.");
 		r.s="hallway6";
-		roomList.put("LaudryRoom", r);
+		roomList.put("LaundryRoom", r);
+		//cafeteria
+		r=new Room("Cafeteria", "There is a security camera in this room and you are caught on camera. YOU LOSE!!!");
+		//we want this option for the cafteria if the security camera is turned off
+		//r=new Room("Cafeteria", "There is a security camera, but it is turned off. The room is filled with tables and chairs.");
+		r.s="hallway3";
+		r.n="ExerciseYard";
+		roomList.put("cafeteria", r);
+		r=new Room("Exercise Yard","You are in a grassy field. A tall electric fence on the north side of the field separates you from the outside world");
+		r.s="cafeteria";
+		roomList.put("ExerciseYard", r);
 		
 		
 		
+		// >>>>>>>>>>>>BASEMENT<<<<<<<<<<<<
+		// stairs
+		r=new Room("Stairs","You are at the bottom of the staircase. There is a dark-lit, dusty storage room east of you.");
+		r.e="storage1";
+		r.u="hallway8";
+		roomList.put("stairs", r);
+		
+		r=new Room("Storage room","You are in the storage room. You see a wireclipper on a rusty rack.");
+		r.w="stairs";
+		r.e="panicRoom";
+		r.s="storage2";
+		r.n="electricRoom";
+		roomList.put("storage1", r);
+		
+		r=new Room("A small storage room","You are in a small storage room.");
+		r.n="storage1";
+		roomList.put("storage2", r);
+		
+		r=new Room("Electric room","You are in the electric room. You see a panel of electric wires that control the electric fence.");
+		r.s="storage1";
+		roomList.put("electricRoom", r);
+		
+		r=new Room("Panic room","You are in the panic room. It looks abandoned a long time ago... Who knows why this room even exist!!!");
+		r.w="storage1";
+		roomList.put("panicRoom", r);
 	}
 }
