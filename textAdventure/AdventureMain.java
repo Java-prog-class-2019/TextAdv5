@@ -62,8 +62,8 @@ public class AdventureMain {
 		player = new Player();
 		//DEBUG
 		
-		Item axe = roomList.get("cell3").items.get(0); //there is only one item in the room, so AXE will be in position 0
-		player.inventory.add(axe);
+		
+		
 	}
 
 	String getCommand() {
@@ -74,7 +74,7 @@ public class AdventureMain {
 		return text;
 	}
 
-
+	
 	boolean parseCommand(String text) {
 
 		/***** PREPROCESSING *****/
@@ -132,7 +132,9 @@ public class AdventureMain {
 		case "help":
 			System.out.print("North-n, East-e, West-w, Up-u, Down-d");
 			break;
-
+		case "check":
+			lookAtRoom(true);
+			break;
 			/**** two word commands ****/		
 		case "look":
 			System.out.print("look where?");
@@ -149,6 +151,10 @@ public class AdventureMain {
 				System.out.print("take what? ");			
 				String comm = getCommand().toLowerCase().trim();
 				word2 = comm;
+//				if (word2=="key") {
+//					 Item key = roomList.get("cell1").items.get(0);
+//						player.inventory.add(key);
+//				}
 			} else {
 				word2 = word2 + " " + word3;
 			}
@@ -166,7 +172,8 @@ public class AdventureMain {
 				//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 				if (item.name.equalsIgnoreCase(word2)) {
 					//player.inventory.add(item);
-					
+				//	 Item key = roomList.get("cell1").items.get(0);
+					player.inventory.add(item);
 					roomList.get(currentRoom).items.remove(item);
 					System.out.println(word2 + " taken");
 					found = true;
@@ -186,6 +193,27 @@ public class AdventureMain {
 		}
 		return true;
 	}	
+
+	 void Addingitems() {
+		// TODO Auto-generated method stub
+		 Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
+			player.inventory.add(axe);
+		 Item key = roomList.get("cell1").items.get(0);
+			player.inventory.add(key);
+			
+	}
+
+	private void showInventory() {
+		//System.out.print(Arrays.toString(player.inventory));				
+		if (player.inventory.size() == 0) {
+			System.out.println("There is nothing in the inventory.");
+			return;
+		}
+		System.out.println("\n-------- INVENTORY--------");
+		for (Item inven: player.inventory) {
+			System.out.println(inven.name);
+		}
+	}
 
 	private void printHelp() {
 		// TODO Auto-generated method stub
