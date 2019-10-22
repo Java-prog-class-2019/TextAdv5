@@ -185,6 +185,16 @@ public class AdventureMain {
 				}
 				else System.out.println("There is no room below you.");
 			}
+			break;
+		case "drop":
+			if (word2 == "") {
+				System.out.print("drop what? ");			
+				String comm = getCommand().toLowerCase().trim();
+				word2 = comm;
+			} else {
+				if (word3 != "")	word2 = word2 + " " + word3;
+			}
+			break;
 		case "take":
 			if (word2 == "") {
 				System.out.print("take what? ");			
@@ -212,8 +222,7 @@ public class AdventureMain {
 				//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 				if (item.name.equalsIgnoreCase(word2)) {
 					//player.inventory.add(item);
-				//	 Item key = roomList.get("cell1").items.get(0);
-					player.inventory.add(item);
+
 					roomList.get(currentRoom).items.remove(item);
 					System.out.println(word2 + " taken");
 					found = true;
