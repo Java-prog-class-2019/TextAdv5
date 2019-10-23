@@ -320,7 +320,6 @@ public class AdventureMain {
 
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
-
 		String message = "You cannot go that way.";
 
 		//north
