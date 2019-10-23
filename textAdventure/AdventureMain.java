@@ -1,5 +1,6 @@
 package textAdventure;
 
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class AdventureMain {
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
 	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
 	//ArrayList<String> inventory = new ArrayList<String>();
+
 	String currentRoom;
 	Player player;
 
@@ -57,6 +59,11 @@ public class AdventureMain {
 		Item.setUpItems(itemList, roomList);
 		// ... more stuff ...
 		currentRoom = "cell1";
+		player = new Player();
+		//DEBUG
+
+
+
 	}
 
 	String getCommand() {
@@ -117,7 +124,7 @@ public class AdventureMain {
 			moveToRoom(word1.charAt(0));	
 			break;
 		case "i": case "inventory":
-			//		showInventory();
+			showInventory();
 			break;
 		case "sleep":
 			//		sleep();			
@@ -125,7 +132,9 @@ public class AdventureMain {
 		case "help":
 			System.out.print("North-n, East-e, West-w, Up-u, Down-d");
 			break;
-
+		case "check":
+			lookAtRoom(true);
+			break;
 			/**** two word commands ****/		
 		case "look":
 			String com="";
@@ -178,19 +187,17 @@ public class AdventureMain {
 			}
 			break;
 		case "drop":
-			if (word2 == "") {
-				System.out.print("drop what? ");			
-				String comm = getCommand().toLowerCase().trim();
-				word2 = comm;
-			} else {
-				if (word3 != "")	word2 = word2 + " " + word3;
-			}
+			dropItem(word2,word3);
 			break;
 		case "take":
 			if (word2 == "") {
 				System.out.print("take what? ");			
 				String comm = getCommand().toLowerCase().trim();
 				word2 = comm;
+				//				if (word2=="key") {
+				//					 Item key = roomList.get("cell1").items.get(0);
+				//						player.inventory.add(key);
+				//				}
 			} else {
 				if (word3 != "")	word2 = word2 + " " + word3;
 			}
@@ -209,7 +216,8 @@ public class AdventureMain {
 				//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 				if (item.name.equalsIgnoreCase(word2)) {
 					//player.inventory.add(item);
-
+					//	 Item key = roomList.get("cell1").items.get(0);
+					player.inventory.add(item);
 					roomList.get(currentRoom).items.remove(item);
 					System.out.println(word2 + " taken");
 					found = true;
@@ -229,6 +237,52 @@ public class AdventureMain {
 		}
 		return true;
 	}	
+
+	private void dropItem(String word2, String word3) {
+		if (word2 == "") {
+			System.out.print("drop what? ");			
+			String comm = getCommand().toLowerCase().trim();
+			word2 = comm;
+		} else {
+			if (word3 != "")	word2 = word2 + " " + word3;
+		}
+
+		boolean invFound = false;
+		for (int i = 0; i < player.inventory.size(); i++) {
+			Item item = player.inventory.get(i);
+			
+			if (item.name.equalsIgnoreCase(word2)) {
+				player.inventory.remove(item);
+				roomList.get(currentRoom).items.add(item);
+				System.out.println(word2 + " dropped");
+				invFound = true;
+				return;
+			}
+		}
+		System.out.println("You don't have the " + word2);
+		
+	}
+
+	void Addingitems() {
+		// TODO Auto-generated method stub
+		Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
+		player.inventory.add(axe);
+		Item key = roomList.get("cell1").items.get(0);
+		player.inventory.add(key);
+
+	}
+
+	private void showInventory() {
+		//System.out.print(Arrays.toString(player.inventory));				
+		if (player.inventory.size() == 0) {
+			System.out.println("There is nothing in the inventory.");
+			return;
+		}
+		System.out.println("\n-------- INVENTORY--------");
+		for (Item inven: player.inventory) {
+			System.out.println(inven.name);
+		}
+	}
 
 	private void printHelp() {
 		// TODO Auto-generated method stub
@@ -252,13 +306,44 @@ public class AdventureMain {
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
 
-		if (c == 'n' && r.n != null) currentRoom = r.n; 
+		String message = "You cannot go that way.";
 
-		if (c == 's' && r.s !=null) currentRoom = r.s;
-		if (c == 'e' && r.e != null) currentRoom = r.e; 
-		if (c == 'w' && r.w != null) currentRoom = r.w; 
-		if (c == 'u' && r.u !=null) currentRoom=r.u;
-		if (c == 'd' && r.d !=null) currentRoom=r.d;
+		//north
+		if (c == 'n' && r.n != null) {
+			currentRoom = r.n;
+		}
+		if(c == 'n' && r.n == null) System.out.println(message);
+
+		//south
+		if (c == 's' && r.s !=null) {
+			currentRoom = r.s;
+		}
+		if(c == 's' && r.s == null) System.out.println(message);
+
+		//east
+		if (c == 'e' && r.e != null) {
+			currentRoom = r.e;
+		}
+		if(c == 'e' && r.e == null) System.out.println(message);
+
+		//west
+		if (c == 'w' && r.w != null) {
+			currentRoom = r.w;
+		}
+		if(c == 'w' && r.w == null) System.out.println(message);
+
+		//up
+		if (c == 'u' && r.u !=null) {
+			currentRoom=r.u;
+		}
+		if(c == 'u' && r.u == null) System.out.println(message);
+
+		//down
+		if (c == 'd' && r.d !=null) {
+			currentRoom=r.d;
+		}
+		if(c == 'd' && r.d == null) System.out.println(message);
+
 		lookAtRoom(true);
 	}
 

@@ -35,9 +35,16 @@ class Item {
 		r = roomList.get("cell3");
 		r.items.add(axe);
 		
-		r = roomList.get("LaudryRoom");
+		r = roomList.get("LaundryRoom");
 		r.items.add(clothes);
 		
+		r = roomList.get("cafeteria");
+		r.items.add(chair);
+		
+		r = roomList.get("storage1");
+		r.items.add(wireClippers);
+		
+		//Keycard still need to be added to guard
 		
 	}
 	
