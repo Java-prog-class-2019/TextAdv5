@@ -18,7 +18,7 @@ public class AdventureMain {
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
 	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
 	//ArrayList<String> inventory = new ArrayList<String>();
-	
+
 	String currentRoom;
 	Player player;
 
@@ -61,9 +61,9 @@ public class AdventureMain {
 		currentRoom = "cell1";
 		player = new Player();
 		//DEBUG
-		
-		
-		
+
+
+
 	}
 
 	String getCommand() {
@@ -74,7 +74,7 @@ public class AdventureMain {
 		return text;
 	}
 
-	
+
 	boolean parseCommand(String text) {
 
 		/***** PREPROCESSING *****/
@@ -124,7 +124,7 @@ public class AdventureMain {
 			moveToRoom(word1.charAt(0));	
 			break;
 		case "i": case "inventory":
-				showInventory();
+			showInventory();
 			break;
 		case "sleep":
 			//		sleep();			
@@ -143,12 +143,12 @@ public class AdventureMain {
 				com = getCommand().toLowerCase();
 			}
 			else com=word2;
-			
+
 			if (com.equals("here")) {
 				lookAtRoom(true);
 				break;
 			}
-			
+
 			if (com.equals("n") || com.equals("look n")) {
 				if (roomList.get(currentRoom).n != null) {
 					String room=roomList.get(currentRoom).n;
@@ -193,23 +193,17 @@ public class AdventureMain {
 			}
 			break;
 		case "drop":
-			if (word2 == "") {
-				System.out.print("drop what? ");			
-				String comm = getCommand().toLowerCase().trim();
-				word2 = comm;
-			} else {
-				if (word3 != "")	word2 = word2 + " " + word3;
-			}
+			dropItem(word2, word3);
 			break;
 		case "take":
 			if (word2 == "") {
 				System.out.print("take what? ");			
 				String comm = getCommand().toLowerCase().trim();
 				word2 = comm;
-//				if (word2=="key") {
-//					 Item key = roomList.get("cell1").items.get(0);
-//						player.inventory.add(key);
-//				}
+				//				if (word2=="key") {
+				//					 Item key = roomList.get("cell1").items.get(0);
+				//						player.inventory.add(key);
+				//				}
 			} else {
 				if (word3 != "")	word2 = word2 + " " + word3;
 			}
@@ -249,15 +243,41 @@ public class AdventureMain {
 		return true;
 	}	
 
-	 /*void Addingitems() {
+	/*void Addingitems() {
 		// TODO Auto-generated method stub
 		 Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
 			player.inventory.add(axe);
 		 Item key = roomList.get("cell1").items.get(0);
 			player.inventory.add(key);
-			
+
 	}
-*/
+	 */
+
+	private void dropItem(String word2, String word3) {
+		if (word2 == "") {
+			System.out.print("drop what? ");
+			String comm = getCommand().toLowerCase().trim();
+			word2 = comm;
+		} else {
+			if (word3 != "") word2 = word2 + " " + word3;
+		}
+
+		boolean invFound = false;
+		for (int i = 0; i < player.inventory.size(); i++) {
+			Item item = player.inventory.get(i);
+
+			if (item.name.equalsIgnoreCase(word2)) {
+				player.inventory.remove(item);
+				roomList.get(currentRoom).items.add(item);
+				System.out.println(word2 + " dropped");
+				invFound = true;
+				return;
+			}
+		}
+		System.out.println("You don't have the " + word2);
+
+	}
+
 	private void showInventory() {
 		//System.out.print(Arrays.toString(player.inventory));				
 		if (player.inventory.size() == 0) {
