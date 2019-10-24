@@ -122,7 +122,8 @@ public class AdventureMain {
 			quitGame();		
 		case "n": case "s": case "w": case "e": case "u": case "d":
 		case "north": case "south": case "west": case "east": case "up": case "down":
-			moveToRoom(word1.charAt(0),doorList);	
+			boolean b = moveToRoom(word1.charAt(0));
+			if (!b) return false;
 			break;
 		case "i": case "inventory":
 			showInventory();
@@ -337,15 +338,12 @@ public class AdventureMain {
 		}
 	}
 
-	void moveToRoom(char c, ArrayList<Doors>doorList) {
+	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
-		if(currentRoom.equals("cell1")||currentRoom.equals("hallway1")) {
-			if (doorList.get(0).unlocked==false) {
-				System.out.print("You can not move there. Your cell door is locked.");
-				return;
-			}
-		}
+		
+		if (!checkGuard(currentRoom)) return false; //false = game over
+		
 		//north
 		if (c == 'n' && r.n != null) {
 			currentRoom = r.n;
@@ -383,6 +381,7 @@ public class AdventureMain {
 		if(c == 'd' && r.d == null) System.out.println(message);
 		
 		lookAtRoom(true);
+		return true;
 	}
 	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
 		if (w2.equals("door")) {
@@ -400,6 +399,20 @@ public class AdventureMain {
 				else System.out.print("You don't have a key");
 			}
 		}
+	}
+
+	// check guard only
+	private boolean checkGuard(String currentRoom) {
+		//don't look for specific room names, look if a Guard object is in the room
+		//and make sure that guard is awake -->>> lose
+		if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
+			System.out.println("The guard kills you");
+			return false;			
+		}
+		
+		return true;		
+	
+		
 	}
 
 }

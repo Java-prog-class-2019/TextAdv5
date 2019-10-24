@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 class Room {
+	
+	static final int NOGUARD = 0;
+	static final int SLEEPINGGUARD = 1;
+	static final int AWAKEGUARD = 2;
+	
+	
+	
 	String name = "";
 	String descr = "";
+	int guard = NOGUARD;
 	
 	//exits
 	String n,s,e,w,u,d;
@@ -52,9 +60,10 @@ class Room {
 				"If you go by him while he's awake you will lose.");
 		r.e="hallway7";
 		r.w="hallway2";
+		r.guard = AWAKEGUARD;
 		roomList.put("hallway5", r);
 		//hallway6
-		r=new Room ("Hallway", "There are two rooms nearbye; one room is to the North and one is to the south"+
+		r=new Room ("Hallway", "There are two rooms nearbye; one room is to the North and one is to the south. "+
 				"To the west and east is more hallway");
 		r.w="hallway8";
 		r.e="hallway4";
