@@ -7,6 +7,5 @@ class Player {
 	
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	
-
 }
  
