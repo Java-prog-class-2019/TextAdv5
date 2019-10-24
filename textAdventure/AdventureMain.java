@@ -321,7 +321,9 @@ public class AdventureMain {
 	void moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
-
+		
+		checkGuard(currentRoom);
+		
 		//north
 		if (c == 'n' && r.n != null) {
 			currentRoom = r.n;
@@ -359,6 +361,16 @@ public class AdventureMain {
 		if(c == 'd' && r.d == null) System.out.println(message);
 
 		lookAtRoom(true);
+	}
+
+	private void checkGuard(String currentRoom) {
+		if(currentRoom.equalsIgnoreCase("hallway5")) {
+			System.out.println("You died, the guard caught you!\nGame Over!");
+			System.exit(0);
+			player.health = 0;
+		}
+		
+		
 	}
 
 }
