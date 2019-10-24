@@ -116,7 +116,8 @@ public class AdventureMain {
 			quitGame();		
 		case "n": case "s": case "w": case "e": case "u": case "d":
 		case "north": case "south": case "west": case "east": case "up": case "down":
-			moveToRoom(word1.charAt(0));	
+			boolean b = moveToRoom(word1.charAt(0));
+			if (!b) return false;
 			break;
 		case "i": case "inventory":
 			showInventory();
@@ -318,11 +319,11 @@ public class AdventureMain {
 		}
 	}
 
-	void moveToRoom(char c) {
+	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
 		
-		checkGuard(currentRoom);
+		if (!checkGuard(currentRoom)) return false; //false = game over
 		
 		//north
 		if (c == 'n' && r.n != null) {
@@ -361,15 +362,20 @@ public class AdventureMain {
 		if(c == 'd' && r.d == null) System.out.println(message);
 
 		lookAtRoom(true);
+		return true;
 	}
 
-	private void checkGuard(String currentRoom) {
-		if(currentRoom.equalsIgnoreCase("hallway5")) {
-			System.out.println("You died, the guard caught you!\nGame Over!");
-			System.exit(0);
-			player.health = 0;
+	// check guard only
+	private boolean checkGuard(String currentRoom) {
+		//don't look for specific room names, look if a Guard object is in the room
+		//and make sure that guard is awake -->>> lose
+		if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
+			System.out.println("The guard kills you");
+			return false;			
 		}
 		
+		return true;		
+	
 		
 	}
 
