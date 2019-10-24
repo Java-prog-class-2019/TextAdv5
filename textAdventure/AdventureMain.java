@@ -45,10 +45,13 @@ public class AdventureMain {
 			playing = parseCommand(command);
 			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
-
-			//check to see if the player has won the game
-
+			
+			//;check to see if the player has won the game
+			if (currentRoom.equals("Guardroom")) {
+				playing = false;
+			}
 		}
+		
 
 		// does anything need to be done after th emain game loop exits?
 
@@ -102,6 +105,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
+		
 		String word1 = words[0];
 		String word2 = "";
 		String word3 = "";
@@ -137,15 +141,32 @@ public class AdventureMain {
 		case "take":
 			takeItem(word2, word3);
 			break;		
-
-			/**** SPECIAL COMMANDS ****/
-			// ...		
-
+		case "use":
+			useSleepinggas();
+			break;
+			
 		default: 
 			System.out.println("Sorry, I don't understand that command");
 		}
+		if (currentRoom.equals("Guardroom")) {
+			System.out.println("YOU LOSE!!!");
+			return false;
+		}
 		return true;
 	}	
+
+	private void useSleepinggas() {
+		String use = getCommand().toLowerCase();
+		if (currentRoom.equals("hallway5")) {
+			if(use.equals("throw")|| use.equals("use") ) {
+				
+			}
+		} else {
+			// you use the sleeping gas, nothing happens, your gas is gone.
+		}
+			
+		
+	}
 
 	private void quitGame() {
 		System.out.print("Do you really want to quit the game? ");
@@ -154,6 +175,7 @@ public class AdventureMain {
 			System.out.print("Thanks for playing. Bye.");
 			System.exit(0);
 		}	
+	
 		
 	}
 
@@ -253,15 +275,7 @@ public class AdventureMain {
 		
 	}
 
-	/*void Addingitems() {
-		// TODO Auto-generated method stub
-		 Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
-			player.inventory.add(axe);
-		 Item key = roomList.get("cell1").items.get(0);
-			player.inventory.add(key);
-
-	}
-	 */
+	
 
 	private void dropItem(String word2, String word3) {
 		if (word2 == "") {
@@ -322,7 +336,7 @@ public class AdventureMain {
 		Room r = roomList.get(currentRoom);
 
 		String message = "You cannot go that way.";
-
+		
 		//north
 		if (c == 'n' && r.n != null) {
 			currentRoom = r.n;
@@ -358,8 +372,12 @@ public class AdventureMain {
 			currentRoom=r.d;
 		}
 		if(c == 'd' && r.d == null) System.out.println(message);
-
+		
 		lookAtRoom(true);
+	}
+	
+	private void loseGame() {	
+		
 	}
 
 }
