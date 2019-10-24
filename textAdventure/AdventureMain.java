@@ -14,6 +14,7 @@ public class AdventureMain {
 	static int INVSIZE = 10; //size of inventory	
 
 	//instance variables
+	ArrayList<Doors> doorList=new ArrayList<Doors>();
 	//ArrayList<Room> roomList = new ArrayList<Room>();
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
 	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
@@ -58,8 +59,9 @@ public class AdventureMain {
 	}
 
 	void setup() {
-		Room.setupRooms(roomList);
+		Room.setupRooms(roomList,doorList);
 		Item.setUpItems(itemList, roomList);
+		Doors.setUpDoors(doorList);
 		// ... more stuff ...
 		currentRoom = "cell1";
 		player = new Player();
@@ -120,7 +122,7 @@ public class AdventureMain {
 			quitGame();		
 		case "n": case "s": case "w": case "e": case "u": case "d":
 		case "north": case "south": case "west": case "east": case "up": case "down":
-			moveToRoom(word1.charAt(0));	
+			moveToRoom(word1.charAt(0),doorList);	
 			break;
 		case "i": case "inventory":
 			showInventory();
@@ -134,6 +136,9 @@ public class AdventureMain {
 			/**** two word commands ****/		
 		case "look":
 			look(word2);
+			break;
+		case "unlock":
+			unlock(word2, word3,doorList);
 			break;
 		case "drop":
 			dropItem(word2, word3);
@@ -332,11 +337,15 @@ public class AdventureMain {
 		}
 	}
 
-	void moveToRoom(char c) {
+	void moveToRoom(char c, ArrayList<Doors>doorList) {
 		Room r = roomList.get(currentRoom);
-
 		String message = "You cannot go that way.";
-		
+		if(currentRoom.equals("cell1")||currentRoom.equals("hallway1")) {
+			if (doorList.get(0).unlocked==false) {
+				System.out.print("You can not move there. Your cell door is locked.");
+				return;
+			}
+		}
 		//north
 		if (c == 'n' && r.n != null) {
 			currentRoom = r.n;
@@ -375,9 +384,22 @@ public class AdventureMain {
 		
 		lookAtRoom(true);
 	}
-	
-	private void loseGame() {	
-		
+	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
+		if (w2.equals("door")) {
+			//cell door
+			//are they in the cell or the hallway outside it?
+			boolean haveKey=false;
+			for (Item inven: player.inventory) {
+				if(inven.name.equals("Key")) haveKey=true;
+			}
+			if("cell1".equals(doorList.get(0).loc1)||"hallway1".equals(doorList.get(0).loc2)) {
+				if (haveKey) {
+					doorList.get(0).unlocked=true;
+					System.out.print("Door unlocked");
+				}
+				else System.out.print("You don't have a key");
+			}
+		}
 	}
 
 }
