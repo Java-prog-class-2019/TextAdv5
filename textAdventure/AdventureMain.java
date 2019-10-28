@@ -153,7 +153,7 @@ public class AdventureMain {
 		}
 		return true;
 	}	
-
+	
 	private void quitGame() {
 		System.out.print("Do you really want to quit the game? ");
 		String ans = getCommand().toUpperCase();
@@ -385,6 +385,12 @@ public class AdventureMain {
 		lookAtRoom(true);
 	}
 	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
+		if (w2.equals("")) {
+			System.out.println("unlock what?");
+			w2=getCommand().toLowerCase().trim();
+			w2 = w2.replaceAll("unlock ", "");
+			w2 = w2.replaceAll("open ", "");
+		}
 		if (w2.equals("door")) {
 			//cell door
 			//are they in the cell or the hallway outside it?
