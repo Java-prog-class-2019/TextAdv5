@@ -93,6 +93,8 @@ public class AdventureMain {
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
+		text = text.replaceAll("open", "unlock");
+		text = text.replaceAll("move ", "");
 
 		String words[] = text.split(" ");
 
@@ -326,8 +328,20 @@ public class AdventureMain {
 	void moveToRoom(char c, ArrayList<Doors>doorList) {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
-		if(currentRoom.equals("cell1")||currentRoom.equals("hallway1")) {
+		if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 			if (doorList.get(0).unlocked==false) {
+				System.out.print("You can not move there. Your cell door is locked.");
+				return;
+			}
+		}
+		if(currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
+			if (doorList.get(1).unlocked==false) {
+				System.out.print("You can not move there. Your cell door is locked.");
+				return;
+			}
+		}
+		if(currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
+			if (doorList.get(2).unlocked==false) {
 				System.out.print("You can not move there. Your cell door is locked.");
 				return;
 			}
@@ -375,16 +389,31 @@ public class AdventureMain {
 			//cell door
 			//are they in the cell or the hallway outside it?
 			boolean haveKey=false;
+			boolean haveKeyCard=false;
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Key")) haveKey=true;
+				if (inven.name.equals("keycard")) haveKeyCard=true;
 			}
-			if("cell1".equals(doorList.get(0).loc1)||"hallway1".equals(doorList.get(0).loc2)) {
+			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 				if (haveKey) {
 					doorList.get(0).unlocked=true;
 					System.out.print("Door unlocked");
 				}
 				else System.out.print("You don't have a key");
 			}
+			else if (currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
+				if (haveKeyCard) {
+					doorList.get(1).unlocked=true;
+				}
+				else System.out.println("You need a guard's key card to unlock this.");
+			}
+			else if (currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
+				if (haveKeyCard) {
+					doorList.get(2).unlocked=true;
+				}
+				else System.out.println("You need a guard's key card to unlock this.");
+			}
+			else System.out.println("There are no doors nearbye to unlock.");
 		}
 	}
 
