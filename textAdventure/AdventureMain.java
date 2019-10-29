@@ -47,9 +47,12 @@ public class AdventureMain {
 			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
 
-			//check to see if the player has won the game
-
+			//;check to see if the player has won the game
+			if (currentRoom.equals("Guardroom")) {
+				playing = false;
+			}
 		}
+
 
 		// does anything need to be done after th emain game loop exits?
 
@@ -89,13 +92,14 @@ public class AdventureMain {
 
 		//P2. word replacement
 		text = text.replaceAll(" into ", " in ");
-		text = text.replaceAll(" rocks", " rock");
+		text = text.replaceAll(" sleepingdust ", " sleeping dust ");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
 		text = text.replaceAll("open", "unlock");
 		text = text.replaceAll("move ", "");
 
+		text = text.replaceAll(" throw", " use");
 		String words[] = text.split(" ");
 
 		//P3. remove all instances of "THE"
@@ -106,6 +110,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
+
 		String word1 = words[0];
 		String word2 = "";
 		String word3 = "";
@@ -145,16 +150,56 @@ public class AdventureMain {
 		case "take":
 			takeItem(word2, word3);
 			break;		
-
-			/**** SPECIAL COMMANDS ****/
-			// ...		
+		case "use":
+			useSleepinggas(word2, word3);
+			break;
 
 		default: 
 			System.out.println("Sorry, I don't understand that command");
 		}
+		if (currentRoom.equals("Guardroom")) {
+			System.out.println("YOU LOSE!!!");
+			return false;
+		}
 		return true;
 	}	
-	
+
+	private void useSleepinggas(String word2, String word3) {
+		if (word2 == "") {
+			System.out.println("use what");
+			String use = getCommand().toLowerCase().trim();
+			word2 = use;
+		}
+		else {
+			if (word3 != "") word2 = word2 + " " + word3;
+		}
+
+		Room r = roomList.get(currentRoom);
+		if(word2.equals("sleepingdust") || word2.equals("sleeping dust")) {					
+			for (Item inven: player.inventory) {					
+				if (inven.name.equals("Sleeping Dust")) {
+					if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
+						r.guard = Room.SLEEPINGGUARD;	
+						System.out.println("You use sleeping dust. The guard is now asleep. You spot a key card hanging off the guard's belt");
+
+					}else {							
+						if(inven.name.equals("Sleeping Dust"))
+							player.inventory.remove(inven);							
+						System.out.println("You wasted your sleeping dust");
+					}											
+				}else {						
+					System.out.println("you dont have sleeping dust");
+				}
+			}				
+		} else {
+			System.out.println(" can't use that");
+		}
+		// you use the sleeping gas, nothing happens, your gas is gone.
+
+
+
+	}
+
 	private void quitGame() {
 		System.out.print("Do you really want to quit the game? ");
 		String ans = getCommand().toUpperCase();
@@ -162,7 +207,8 @@ public class AdventureMain {
 			System.out.print("Thanks for playing. Bye.");
 			System.exit(0);
 		}	
-		
+
+
 	}
 
 	private void takeItem(String word2, String word3) {
@@ -201,7 +247,7 @@ public class AdventureMain {
 		}
 
 		if (!found) System.out.println("There is no " + word2 + " here.");
-		
+
 	}
 
 	private void look(String word2) {
@@ -258,18 +304,10 @@ public class AdventureMain {
 			}
 			else System.out.println("There is no room below you.");
 		}
-		
-	}
-
-	/*void Addingitems() {
-		// TODO Auto-generated method stub
-		 Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
-			player.inventory.add(axe);
-		 Item key = roomList.get("cell1").items.get(0);
-			player.inventory.add(key);
 
 	}
-	 */
+
+
 
 	private void dropItem(String word2, String word3) {
 		if (word2 == "") {
@@ -436,10 +474,10 @@ public class AdventureMain {
 			System.out.println("The guard kills you");
 			return false;			
 		}
-		
+
 		return true;		
-	
-		
+
+
 	}
 
 }
