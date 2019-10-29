@@ -92,14 +92,13 @@ public class AdventureMain {
 
 		//P2. word replacement
 		text = text.replaceAll(" into ", " in ");
-		text = text.replaceAll(" sleepingdust ", " sleeping dust ");
+		text = text.replaceAll("sleepingdust", "sleeping dust");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
 		text = text.replaceAll("open", "unlock");
 		text = text.replaceAll("move ", "");
-
-		text = text.replaceAll(" throw", " use");
+		text = text.replaceAll("throw", "use");
 		String words[] = text.split(" ");
 
 		//P3. remove all instances of "THE"
