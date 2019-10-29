@@ -13,7 +13,7 @@ class Room {
 	
 	String name = "";
 	String descr = "";
-	int guard = NOGUARD;
+	 int guard = NOGUARD;
 	
 	//exits
 	String n,s,e,w,u,d;

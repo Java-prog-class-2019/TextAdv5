@@ -46,13 +46,13 @@ public class AdventureMain {
 			playing = parseCommand(command);
 			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
-			
+
 			//;check to see if the player has won the game
 			if (currentRoom.equals("Guardroom")) {
 				playing = false;
 			}
 		}
-		
+
 
 		// does anything need to be done after th emain game loop exits?
 
@@ -92,11 +92,11 @@ public class AdventureMain {
 
 		//P2. word replacement
 		text = text.replaceAll(" into ", " in ");
-		text = text.replaceAll(" rocks", " rock");
+		text = text.replaceAll(" sleepingdust ", " sleeping dust ");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
-
+		text = text.replaceAll(" throw", " use");
 		String words[] = text.split(" ");
 
 		//P3. remove all instances of "THE"
@@ -107,7 +107,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
-		
+
 		String word1 = words[0];
 		String word2 = "";
 		String word3 = "";
@@ -148,9 +148,9 @@ public class AdventureMain {
 			takeItem(word2, word3);
 			break;		
 		case "use":
-			useSleepinggas();
+			useSleepinggas(word2, word3);
 			break;
-			
+
 		default: 
 			System.out.println("Sorry, I don't understand that command");
 		}
@@ -161,17 +161,40 @@ public class AdventureMain {
 		return true;
 	}	
 
-	private void useSleepinggas() {
-		String use = getCommand().toLowerCase();
-		if (currentRoom.equals("hallway5")) {
-			if(use.equals("throw")|| use.equals("use") ) {
-				
-			}
-		} else {
-			// you use the sleeping gas, nothing happens, your gas is gone.
+	private void useSleepinggas(String word2, String word3) {
+		if (word2 == "") {
+			System.out.println("use what");
+			String use = getCommand().toLowerCase().trim();
+			word2 = use;
 		}
-			
-		
+		else {
+			if (word3 != "") word2 = word2 + " " + word3;
+		}
+
+		Room r = roomList.get(currentRoom);
+		if(word2.equals("sleepingdust") || word2.equals("sleeping dust")) {					
+			for (Item inven: player.inventory) {					
+				if (inven.name.equals("Sleeping Dust")) {
+					if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
+						r.guard = Room.SLEEPINGGUARD;	
+						System.out.println("You use sleeping dust. The guard is now asleep. You spot a key card hanging off the guard's belt");
+
+					}else {							
+						if(inven.name.equals("Sleeping Dust"))
+							player.inventory.remove(inven);							
+						System.out.println("You wasted your sleeping dust");
+					}											
+				}else {						
+					System.out.println("you dont have sleeping dust");
+				}
+			}				
+		} else {
+			System.out.println(" can't use that");
+		}
+		// you use the sleeping gas, nothing happens, your gas is gone.
+
+
+
 	}
 
 	private void quitGame() {
@@ -181,8 +204,8 @@ public class AdventureMain {
 			System.out.print("Thanks for playing. Bye.");
 			System.exit(0);
 		}	
-	
-		
+
+
 	}
 
 	private void takeItem(String word2, String word3) {
@@ -221,7 +244,7 @@ public class AdventureMain {
 		}
 
 		if (!found) System.out.println("There is no " + word2 + " here.");
-		
+
 	}
 
 	private void look(String word2) {
@@ -278,10 +301,10 @@ public class AdventureMain {
 			}
 			else System.out.println("There is no room below you.");
 		}
-		
+
 	}
 
-	
+
 
 	private void dropItem(String word2, String word3) {
 		if (word2 == "") {
@@ -341,9 +364,9 @@ public class AdventureMain {
 	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
-		
+
 		if (!checkGuard(currentRoom)) return false; //false = game over
-		
+
 		//north
 		if (c == 'n' && r.n != null) {
 			currentRoom = r.n;
@@ -379,7 +402,7 @@ public class AdventureMain {
 			currentRoom=r.d;
 		}
 		if(c == 'd' && r.d == null) System.out.println(message);
-		
+
 		lookAtRoom(true);
 		return true;
 	}
@@ -409,10 +432,10 @@ public class AdventureMain {
 			System.out.println("The guard kills you");
 			return false;			
 		}
-		
+
 		return true;		
-	
-		
+
+
 	}
 
 }

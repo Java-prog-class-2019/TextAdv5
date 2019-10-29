@@ -45,7 +45,9 @@ class Item {
 		r = roomList.get("storage1");
 		r.items.add(wireClippers);
 				
-		//Keycard still need to be added to guard
+		r = roomList.get("hallway7");
+		r.items.add(keycard);
+		
 		
 	}
 	
