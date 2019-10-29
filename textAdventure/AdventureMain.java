@@ -333,19 +333,19 @@ public class AdventureMain {
 		if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 			if (doorList.get(0).unlocked==false) {
 				System.out.print("You can not move there. Your cell door is locked.");
-				return;
+				return true;
 			}
 		}
 		if(currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
 			if (doorList.get(1).unlocked==false) {
 				System.out.print("You can not move there. Your cell door is locked.");
-				return;
+				return true;
 			}
 		}
 		if(currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
 			if (doorList.get(2).unlocked==false) {
 				System.out.print("You can not move there. Your cell door is locked.");
-				return;
+				return true;
 			}
 		}
 		
