@@ -323,7 +323,7 @@ public class AdventureMain {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
 		
-		if (!checkGuard(currentRoom)) return false; //false = game over
+		if (!checkGuard(currentRoom,c)) return false; //false = game over
 		
 		//north
 		if (c == 'n' && r.n != null) {
@@ -366,10 +366,10 @@ public class AdventureMain {
 	}
 
 	// check guard only
-	private boolean checkGuard(String currentRoom) {
+	private boolean checkGuard(String currentRoom, char c) {
 		//don't look for specific room names, look if a Guard object is in the room
 		//and make sure that guard is awake -->>> lose
-		if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
+		if(roomList.get(currentRoom).guard == Room.AWAKEGUARD && c=='e') {
 			System.out.println("The guard kills you");
 			return false;			
 		}
