@@ -366,7 +366,7 @@ public class AdventureMain {
 	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
-		if (!checkGuard(currentRoom)) return false; //false = game over
+		if (!checkGuard(currentRoom,c)) return false; //false = game over
 		if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 			if (doorList.get(0).unlocked==false) {
 				System.out.print("You can not move there. Your cell door is locked.");
