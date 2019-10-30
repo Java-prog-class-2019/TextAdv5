@@ -42,6 +42,7 @@ public class AdventureMain {
 		/***** MAIN GAME LOOP *****/
 		while (playing) {
 
+
 			command = getCommand();
 
 			playing = parseCommand(command, normClothes);
@@ -155,9 +156,15 @@ public class AdventureMain {
 			break;
 		case "take":
 			takeItem(word2, word3);
-			break;		
-
-		default: 
+			break;	
+		case "use":
+		useSleepinggas(word2, word3);break;
+		case "change":
+			normClothes=changeClothes(word2);
+			if (normClothes) System.out.println("You are now wearing a guard uniform");
+			else System.out.println("You have no clothes to change into");
+			break;
+		default:
 			System.out.println("Sorry, I don't understand that command");
 		}
 		if (currentRoom.equals("Guardroom")) {
@@ -478,11 +485,11 @@ public class AdventureMain {
 				for (Item inven: player.inventory) {
 					if (inven.name.equals("Clothes")) {
 						a= true;
-						player.inventory.remove(inven);
 					}
 					else a=false;
 				}
 			}
+			if(a)player.inventory.remove("Clothes");
 			return a;
 		}
 		return false;
