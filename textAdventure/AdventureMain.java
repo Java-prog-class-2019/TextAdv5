@@ -195,9 +195,13 @@ public class AdventureMain {
 		case "drop":
 			dropItem(word2, word3);
 			break;
+
+		case "break":
+			breakObject(word2);
+			break;
 		case "take":
-			if (word2 == "") {
-				System.out.print("take what? ");			
+			if (word2 == "") {	
+				System.out.print("take what?");
 				String comm = getCommand().toLowerCase().trim();
 				word2 = comm;
 				//				if (word2=="key") {
@@ -232,10 +236,7 @@ public class AdventureMain {
 
 			if (!found) System.out.println("There is no " + word2 + " here.");
 
-			break;		
-
-			/**** SPECIAL COMMANDS ****/
-			// ...		
+			break;
 
 		default: 
 			System.out.println("Sorry, I don't understand that command");
@@ -243,15 +244,16 @@ public class AdventureMain {
 		return true;
 	}	
 
-	/*void Addingitems() {
+	void Addingitems() {
 		// TODO Auto-generated method stub
-		 Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
-			player.inventory.add(axe);
-		 Item key = roomList.get("cell1").items.get(0);
-			player.inventory.add(key);
+		Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
+		player.inventory.add(axe);
+		Item key = roomList.get("cell1").items.get(0);
+		player.inventory.add(key);
 
 	}
-	 */
+
+
 
 	private void dropItem(String word2, String word3) {
 		if (word2 == "") {
@@ -294,6 +296,48 @@ public class AdventureMain {
 		// TODO Auto-generated method stub
 
 	}
+	void breakObject(String  word2) {
+
+		//fix the != ... .equals
+		if (currentRoom !="SecurityRoom" && currentRoom != "electricRoom") {
+			//are there other rooms where you can break something?
+			System.out.println("There is nothing to break here");
+			return;
+		}
+
+		//you are in the correct room
+
+		if(word2 =="") {
+			System.out.print("Break computer Screen with what?");
+			String comm = getCommand().toLowerCase().trim();
+            word2=comm;
+		}
+		else {
+			if (word2 != "")
+				word2=word2 + " ";
+		
+		}
+
+		//see if object is in inventory
+		boolean invFound = false;
+		for (int i = 0; i < player.inventory.size(); i++) {
+			Item item = player.inventory.get(i);
+
+			if (item.name.equalsIgnoreCase(word2)) {				
+				invFound = true;			
+		System.out.print("Security Cameras and Computer screens smashed with Axe and you cannot be seen");
+			}
+	
+		if (!invFound) {
+			System.out.println("Sorry, you don't have " + word2 + " in your inventory");
+			
+		}
+		}
+		return;
+	//you have the object and you are in the correct room:
+	}
+
+
 
 	//tons of other methods go here ...		
 	void lookAtRoom(boolean x) {
