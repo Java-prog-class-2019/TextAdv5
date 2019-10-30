@@ -107,7 +107,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
-
+		
 		String word1 = words[0];
 		String word2 = "";
 		String word3 = "";
@@ -170,30 +170,40 @@ public class AdventureMain {
 		else {
 			if (word3 != "") word2 = word2 + " " + word3;
 		}
-
+		boolean found=false;
 		Room r = roomList.get(currentRoom);
 		if(word2.equals("sleepingdust") || word2.equals("sleeping dust")) {					
-			for (Item inven: player.inventory) {					
-				if (inven.name.equals("Sleeping Dust")) {
+			for (int i = 0; i < player.inventory.size(); i++) {
+				Item item = player.inventory.get(i);			
+				if (item.name.equals("Sleeping Dust")) {
+					found = true;
 					if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
-						r.guard = Room.SLEEPINGGUARD;	
+						r.guard = Room.SLEEPINGGUARD;			
+						r.descr = "You are in a section of hallway which contains a Sleeping guard"	;							
 						System.out.println("You use sleeping dust. The guard is now asleep. You spot a key card hanging off the guard's belt");
-
+						player.inventory.remove(item);	
 					}else {							
-						if(inven.name.equals("Sleeping Dust"))
-							player.inventory.remove(inven);							
-						System.out.println("You wasted your sleeping dust");
+						if(item.name.equals("Sleeping Dust"))
+							player.inventory.remove(item);							
+						System.out.println("You wasted your sleeping dust. You nolonger have sleeping dust in your inventory");
 					}											
-				}else {						
-					System.out.println("you dont have sleeping dust");
 				}
-			}				
-		} else {
-			System.out.println(" can't use that");
+			}
+			if(found == true){
+				System.out.println(".");
+			}else {
+				System.out.println("you dont have sleeping dust");
+			}
+		}else {
+			System.out.println("can't use that" );
 		}
 		// you use the sleeping gas, nothing happens, your gas is gone.
-
-
+		if(roomList.get(currentRoom).guard == Room.SLEEPINGGUARD) {
+			if(roomList.get(currentRoom).name == "hallway5") {
+				System.out.println("...");
+			}
+		}
+		
 
 	}
 
@@ -204,8 +214,6 @@ public class AdventureMain {
 			System.out.print("Thanks for playing. Bye.");
 			System.exit(0);
 		}	
-
-
 	}
 
 	private void takeItem(String word2, String word3) {
