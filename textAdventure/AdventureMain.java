@@ -116,7 +116,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
-
+		
 		String word1 = words[0];
 		String word2 = "";
 		String word3 = "";
@@ -166,7 +166,53 @@ public class AdventureMain {
 		}
 		return true;
 	}	
-	
+
+	private void useSleepinggas(String word2, String word3) {
+		if (word2 == "") {
+			System.out.println("use what");
+			String use = getCommand().toLowerCase().trim();
+			word2 = use;
+		}
+		else {
+			if (word3 != "") word2 = word2 + " " + word3;
+		}
+		boolean found=false;
+		Room r = roomList.get(currentRoom);
+		if(word2.equals("sleepingdust") || word2.equals("sleeping dust")) {					
+			for (int i = 0; i < player.inventory.size(); i++) {
+				Item item = player.inventory.get(i);			
+				if (item.name.equals("Sleeping Dust")) {
+					found = true;
+					if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
+						r.guard = Room.SLEEPINGGUARD;			
+						r.descr = "You are in a section of hallway which now contains Sleeping guard" + "walk quietly past him"	;							
+						System.out.println("You use sleeping dust. The guard is now asleep. You spot a key card hanging off the guard's belt");
+						player.inventory.remove(item);	
+					}else {							
+						if(item.name.equals("Sleeping Dust"))
+							player.inventory.remove(item);							
+						System.out.println("You wasted your sleeping dust. You nolonger have sleeping dust in your inventory");
+					}											
+				}
+			}
+			if(found == true){
+				System.out.println(".");
+			}else {
+				System.out.println("you dont have sleeping dust");
+			}
+		}else {
+			System.out.println("can't use that" );
+		}
+		// you use the sleeping gas, nothing happens, your gas is gone.
+		if(roomList.get(currentRoom).guard == Room.SLEEPINGGUARD) {
+			if(roomList.get(currentRoom).name == "hallway5") {
+				System.out.println("...");
+			}
+		}
+		
+
+	}
+
 	private void quitGame() {
 		System.out.print("Do you really want to quit the game? ");
 		String ans = getCommand().toUpperCase();
@@ -174,7 +220,6 @@ public class AdventureMain {
 			System.out.print("Thanks for playing. Bye.");
 			System.exit(0);
 		}	
-		
 	}
 
 	private void takeItem(String word2, String word3) {
@@ -394,41 +439,20 @@ public class AdventureMain {
 		return true;
 	}
 	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
-		if (w2.equals("")) {
-			System.out.println("unlock what?");
-			w2=getCommand().toLowerCase().trim();
-			w2 = w2.replaceAll("unlock ", "");
-			w2 = w2.replaceAll("open ", "");
-		}
 		if (w2.equals("door")) {
 			//cell door
 			//are they in the cell or the hallway outside it?
 			boolean haveKey=false;
-			boolean haveKeyCard=false;
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Key")) haveKey=true;
-				if (inven.name.equals("keycard")) haveKeyCard=true;
 			}
-			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
+			if("cell1".equals(doorList.get(0).loc1)||"hallway1".equals(doorList.get(0).loc2)) {
 				if (haveKey) {
 					doorList.get(0).unlocked=true;
 					System.out.print("Door unlocked");
 				}
 				else System.out.print("You don't have a key");
 			}
-			else if (currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
-				if (haveKeyCard) {
-					doorList.get(1).unlocked=true;
-				}
-				else System.out.println("You need a guard's key card to unlock this.");
-			}
-			else if (currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
-				if (haveKeyCard) {
-					doorList.get(2).unlocked=true;
-				}
-				else System.out.println("You need a guard's key card to unlock this.");
-			}
-			else System.out.println("There are no doors nearbye to unlock.");
 		}
 	}
 
