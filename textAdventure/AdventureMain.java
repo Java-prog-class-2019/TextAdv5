@@ -32,6 +32,7 @@ public class AdventureMain {
 	AdventureMain() {
 
 		boolean playing = true;
+		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
@@ -43,7 +44,7 @@ public class AdventureMain {
 
 			command = getCommand();
 
-			playing = parseCommand(command);
+			playing = parseCommand(command, normClothes);
 			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
 
@@ -77,7 +78,7 @@ public class AdventureMain {
 	}
 
 
-	boolean parseCommand(String text) {
+	boolean parseCommand(String text, boolean normClothes) {
 
 		/***** PREPROCESSING *****/
 		//P1. 
@@ -90,11 +91,14 @@ public class AdventureMain {
 		//P2. word replacement
 		text = text.replaceAll(" into ", " in ");
 		text = text.replaceAll(" rocks", " rock");
-		text = text.replaceAll("pick up", "pickup");
+		text = text.replaceAll("pick up", "take");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
 		text = text.replaceAll("open", "unlock");
-		text = text.replaceAll("move ", "");
+		text = text.replaceAll("move ", ""); //so it will work if the user types move north instead of just north
+		text = text.replaceAll("go", "");
+		text = text.replaceAll("change into", "change");
+		text = text.replaceAll("put on", "change");
 
 		String words[] = text.split(" ");
 
@@ -144,7 +148,12 @@ public class AdventureMain {
 			break;
 		case "take":
 			takeItem(word2, word3);
-			break;		
+			break;	
+		case "change":
+			normClothes=changeClothes(word2);
+			if (normClothes) System.out.println("You are now wearing normal clothes");
+			else System.out.println("You have no clothes to change into");
+			break;
 
 			/**** SPECIAL COMMANDS ****/
 			// ...		
@@ -154,7 +163,7 @@ public class AdventureMain {
 		}
 		return true;
 	}	
-	
+
 	private void quitGame() {
 		System.out.print("Do you really want to quit the game? ");
 		String ans = getCommand().toUpperCase();
@@ -162,7 +171,7 @@ public class AdventureMain {
 			System.out.print("Thanks for playing. Bye.");
 			System.exit(0);
 		}	
-		
+
 	}
 
 	private void takeItem(String word2, String word3) {
@@ -201,7 +210,7 @@ public class AdventureMain {
 		}
 
 		if (!found) System.out.println("There is no " + word2 + " here.");
-		
+
 	}
 
 	private void look(String word2) {
@@ -258,7 +267,7 @@ public class AdventureMain {
 			}
 			else System.out.println("There is no room below you.");
 		}
-		
+
 	}
 
 	/*void Addingitems() {
@@ -348,8 +357,8 @@ public class AdventureMain {
 				return true;
 			}
 		}
-		
-		
+
+
 		//north
 		if (c == 'n' && r.n != null) {
 			currentRoom = r.n;
@@ -436,10 +445,26 @@ public class AdventureMain {
 			System.out.println("The guard kills you");
 			return false;			
 		}
-		
-		return true;		
-	
-		
+
+		return true;			
+	}
+
+	boolean changeClothes(String w2) {
+		if (w2.equals("clothes")) {
+			boolean a=false;
+			if (player.inventory.size()==0) a=false;
+			else {
+				for (Item inven: player.inventory) {
+					if (inven.name.equals("Clothes")) {
+						a= true;
+						player.inventory.remove(inven);
+					}
+					else a=false;
+				}
+			}
+			return a;
+		}
+		return false;
 	}
 
 }
