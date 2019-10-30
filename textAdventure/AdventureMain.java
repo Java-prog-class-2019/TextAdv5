@@ -455,10 +455,7 @@ public class AdventureMain {
 			if (player.inventory.size()==0) a=false;
 			else {
 				for (Item inven: player.inventory) {
-					if (inven.name.equals("Clothes")) {
-						a= true;
-						player.inventory.remove(inven);
-					}
+					if (inven.name.equals("Clothes")) a= true;
 					else a=false;
 				}
 			}
