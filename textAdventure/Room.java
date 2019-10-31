@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 class Room {
+	
+	static final int NOGUARD = 0;
+	static final int SLEEPINGGUARD = 1;
+	static final int AWAKEGUARD = 2;
+	
+	
+	
 	String name = "";
 	String descr = "";
+	 int guard = NOGUARD;
 	
 	//exits
 	String n,s,e,w,u,d;
@@ -18,11 +26,11 @@ class Room {
 		descr = s2;
 	}
 	
-	static void setupRooms(HashMap<String,Room> roomList) {
+	static void setupRooms(HashMap<String,Room> roomList, ArrayList<Doors> doorList) {
 		//cell1
 		Room r = new Room("Your Cell",
 				"You find yourself in a dingy prison cell. The door out of your cell, which is to the north of you, is locked.");
-		r.n = ("hallway1");		
+		r.n = ("hallway1");	
 		roomList.put("cell1", r);
 		
 		r = new Room ("Hallway", "You find yourself in a dimly lit hallway, which leads North, East, and West.");
@@ -52,9 +60,10 @@ class Room {
 				"If you go by him while he's awake you will lose.");
 		r.e="hallway7";
 		r.w="hallway2";
+		r.guard = AWAKEGUARD;
 		roomList.put("hallway5", r);
 		//hallway6
-		r=new Room ("Hallway", "There are two rooms nearbye; one room is to the North and one is to the south"+
+		r=new Room ("Hallway", "There are two rooms nearbye; one room is to the North and one is to the south. "+
 				"To the west and east is more hallway");
 		r.w="hallway8";
 		r.e="hallway4";

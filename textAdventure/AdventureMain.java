@@ -14,6 +14,7 @@ public class AdventureMain {
 	static int INVSIZE = 10; //size of inventory	
 
 	//instance variables
+	ArrayList<Doors> doorList=new ArrayList<Doors>();
 	//ArrayList<Room> roomList = new ArrayList<Room>();
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
 	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
@@ -31,6 +32,7 @@ public class AdventureMain {
 	AdventureMain() {
 
 		boolean playing = true;
+		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
@@ -40,23 +42,28 @@ public class AdventureMain {
 		/***** MAIN GAME LOOP *****/
 		while (playing) {
 
+
 			command = getCommand();
 
-			playing = parseCommand(command);
+			playing = parseCommand(command, normClothes);
 			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
 
-			//check to see if the player has won the game
-
+			//;check to see if the player has won the game
+			if (currentRoom.equals("Guardroom")) {
+				playing = false;
+			}
 		}
+
 
 		// does anything need to be done after th emain game loop exits?
 
 	}
 
 	void setup() {
-		Room.setupRooms(roomList);
+		Room.setupRooms(roomList,doorList);
 		Item.setUpItems(itemList, roomList);
+		Doors.setUpDoors(doorList);
 		// ... more stuff ...
 		currentRoom = "cell1";
 		player = new Player();
@@ -75,7 +82,7 @@ public class AdventureMain {
 	}
 
 
-	boolean parseCommand(String text) {
+	boolean parseCommand(String text, boolean normClothes) {
 
 		/***** PREPROCESSING *****/
 		//P1. 
@@ -87,11 +94,19 @@ public class AdventureMain {
 
 		//P2. word replacement
 		text = text.replaceAll(" into ", " in ");
-		text = text.replaceAll(" rocks", " rock");
+		text = text.replaceAll("pick up", "take");
+		text = text.replaceAll("sleepingdust", "sleeping dust");
 		text = text.replaceAll("pick up", "pickup");
+		text = text.replaceAll(" rocks", " rock");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
+		text = text.replaceAll("open", "unlock");
+		text = text.replaceAll("move ", ""); //so it will work if the user types move north instead of just north
+		text = text.replaceAll("go", "");
+		text = text.replaceAll("change into", "change");
+		text = text.replaceAll("put on", "change");
 
+		text = text.replaceAll("throw", "use");
 		String words[] = text.split(" ");
 
 		//P3. remove all instances of "THE"
@@ -102,6 +117,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
+		
 		String word1 = words[0];
 		String word2 = "";
 		String word3 = "";
@@ -113,15 +129,11 @@ public class AdventureMain {
 
 		/**** one word commands ****/
 		case "quit":
-			System.out.print("Do you really want to quit the game? ");
-			String ans = getCommand().toUpperCase();
-			if (ans.equals("YES") || ans.equals("Y")) {
-				System.out.print("Thanks for playing. Bye.");
-				return false;
-			}			
+			quitGame();		
 		case "n": case "s": case "w": case "e": case "u": case "d":
 		case "north": case "south": case "west": case "east": case "up": case "down":
-			moveToRoom(word1.charAt(0));	
+			boolean b = moveToRoom(word1.charAt(0));
+			if (!b) return false;
 			break;
 		case "i": case "inventory":
 			showInventory();
@@ -130,67 +142,14 @@ public class AdventureMain {
 			//		sleep();			
 			break;	
 		case "help":
-			System.out.print("North-n, East-e, West-w, Up-u, Down-d");
-			break;
-		case "check":	//this is the same as "look here"
-			lookAtRoom(true);
+			printHelp();
 			break;
 			/**** two word commands ****/		
 		case "look":
-			String com="";
-			if (word2=="") {
-				System.out.print("look where?");
-				com = getCommand().toLowerCase();
-			}
-			else com=word2;
-
-			if (com.equals("here")) {
-				lookAtRoom(true);
-				break;
-			}
-
-			if (com.equals("n") || com.equals("look n")) {
-				if (roomList.get(currentRoom).n != null) {
-					String room=roomList.get(currentRoom).n;
-					System.out.print("There is " + roomList.get(room).name + " north of you");
-				}
-				else System.out.println("There is no room north of you.");
-			}
-			if (com.equals("s") || com.equals ("look s")) {
-				if (roomList.get(currentRoom).s != null) {
-					String room=roomList.get(currentRoom).s;
-					System.out.print("There is " + roomList.get(room).name + " south of you");
-				}
-				else System.out.println("There is no room south of you.");
-			}
-			if (com.equals("e") || com.equals("look e")) {
-				if (roomList.get(currentRoom).e != null) {
-					String room=roomList.get(currentRoom).e;
-					System.out.print("There is " + roomList.get(room).name + " east of you");
-				}
-				else System.out.println("There is no room east of you.");
-			}
-			if (com.equals("w") || com.equals("look w")) {
-				if (roomList.get(currentRoom).w != null) {
-					String room=roomList.get(currentRoom).w;
-					System.out.print("There is " + roomList.get(room).name + " west of you");
-				}
-				else System.out.println("There is no room west of you.");
-			}
-			if (com.equals("u") || com.equals("look u")) {
-				if (roomList.get(currentRoom).u != null) {
-					String room=roomList.get(currentRoom).u;
-					System.out.print("There is " + roomList.get(room).name + " above you");
-				}
-				else System.out.println("There is no room above you.");
-			}
-			if (com.equals("d") || com.equals("look down")) {
-				if (roomList.get(currentRoom).d != null) {
-					String room=roomList.get(currentRoom).d;
-					System.out.print("There is " + roomList.get(room).name + " below you");
-				}
-				else System.out.println("There is no room below you.");
-			}
+			look(word2);
+			break;
+		case "unlock":
+			unlock(word2, word3,doorList);
 			break;
 		case "drop":
 			dropItem(word2, word3);
@@ -210,39 +169,134 @@ public class AdventureMain {
 				//				}
 			} else {
 				if (word3 != "")	word2 = word2 + " " + word3;
-			}
-
-			//does current room contain item
-			// roomList.get(currentRoom).items  < -- this is the item list for the current rooom
-
-			int numItems = roomList.get(currentRoom).items.size();
-			//System.out.print("=="+word2+);
-
-			//find item in the room
-			boolean found = false;
-			for (int i = 0; i < numItems; i++ ) {
-				Item item = roomList.get(currentRoom).items.get(i);
-
-				//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
-				if (item.name.equalsIgnoreCase(word2)) {
-					player.inventory.add(item);
-
-					roomList.get(currentRoom).items.remove(item);
-					System.out.println(word2 + " taken");
-					found = true;
-					break;
-				}
-			}
-
-			if (!found) System.out.println("There is no " + word2 + " here.");
-
+			takeItem(word2, word3);
+			break;	
+		case "use":
+		useSleepinggas(word2, word3);break;
+		case "change":
+			normClothes=changeClothes(word2);
+			if (normClothes) System.out.println("You are now wearing a guard uniform");
+			else System.out.println("You have no clothes to change into");
 			break;
-
-		default: 
+		default:
 			System.out.println("Sorry, I don't understand that command");
+		}
+		if (currentRoom.equals("Guardroom")) {
+			System.out.println("YOU LOSE!!!");
+			return false;
 		}
 		return true;
 	}	
+
+	private void useSleepinggas(String word2, String word3) {
+		if (word2 == "") {
+			System.out.println("use what");
+			String use = getCommand().toLowerCase().trim();
+			word2 = use;
+		}
+		else {
+			if (word3 != "") word2 = word2 + " " + word3;
+		}
+		boolean found=false;
+		Room r = roomList.get(currentRoom);
+		if(word2.equals("sleepingdust") || word2.equals("sleeping dust")) {					
+			for (int i = 0; i < player.inventory.size(); i++) {
+				Item item = player.inventory.get(i);			
+				if (item.name.equals("Sleeping Dust")) {
+					found = true;
+					if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
+						r.guard = Room.SLEEPINGGUARD;			
+						r.descr = "You are in a section of hallway which now contains Sleeping guard" + "walk quietly past him"	;							
+						System.out.println("You use sleeping dust. The guard is now asleep. You spot a key card hanging off the guard's belt");
+						player.inventory.remove(item);	
+					}else {							
+						if(item.name.equals("Sleeping Dust"))
+							player.inventory.remove(item);							
+						System.out.println("You wasted your sleeping dust. You nolonger have sleeping dust in your inventory");
+					}											
+				}
+
+			}
+			if(found == true){
+				System.out.println(".");
+			}else {
+				System.out.println("you dont have sleeping dust");
+			}
+		}else {
+			System.out.println("can't use that" );
+		}
+		// you use the sleeping gas, nothing happens, your gas is gone.
+		if(roomList.get(currentRoom).guard == Room.SLEEPINGGUARD) {
+			if(roomList.get(currentRoom).name == "hallway5") {
+				System.out.println("...");
+			}
+		}
+		
+
+	}
+
+	private void quitGame() {
+		System.out.print("Do you really want to quit the game? ");
+		String ans = getCommand().toUpperCase();
+		if (ans.equals("YES") || ans.equals("Y")) {
+			System.out.print("Thanks for playing. Bye.");
+			System.exit(0);
+		}	
+	}
+
+	private void takeItem(String word2, String word3) {
+		if (word2 == "") {
+			System.out.print("take what? ");			
+			String comm = getCommand().toLowerCase().trim();
+			word2 = comm;
+			//				if (word2=="key") {
+			//					 Item key = roomList.get("cell1").items.get(0);
+			//						player.inventory.add(key);
+			//				}
+		} else {
+			if (word3 != "")	word2 = word2 + " " + word3;
+		}
+
+		//does current room contain item
+		// roomList.get(currentRoom).items  < -- this is the item list for the current rooom
+
+		int numItems = roomList.get(currentRoom).items.size();
+		//System.out.print("=="+word2+);
+
+		//find item in the room
+		boolean found = false;
+		for (int i = 0; i < numItems; i++ ) {
+			Item item = roomList.get(currentRoom).items.get(i);
+
+			//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
+			if (item.name.equalsIgnoreCase(word2)) {
+				player.inventory.add(item);
+
+				roomList.get(currentRoom).items.remove(item);
+				System.out.println(word2 + " taken");
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) System.out.println("There is no " + word2 + " here.");
+			break;
+
+	}
+
+	private void look(String word2) {
+		String com="";
+		if (word2=="") {
+			System.out.print("look where?");
+			com = getCommand().toLowerCase();
+		}
+		else com=word2;
+
+
+		if (com.equals("here")) {
+			lookAtRoom(true);
+		}
+
 
 	void Addingitems() {
 		// TODO Auto-generated method stub
@@ -250,6 +304,50 @@ public class AdventureMain {
 		player.inventory.add(axe);
 		Item key = roomList.get("cell1").items.get(0);
 		player.inventory.add(key);
+
+		if (com.equals("n") || com.equals("look n")) {
+			if (roomList.get(currentRoom).n != null) {
+				String room=roomList.get(currentRoom).n;
+				System.out.print("There is " + roomList.get(room).name + " north of you");
+			}
+			else System.out.println("There is no room north of you.");
+		}
+		if (com.equals("s") || com.equals ("look s")) {
+			if (roomList.get(currentRoom).s != null) {
+				String room=roomList.get(currentRoom).s;
+				System.out.print("There is " + roomList.get(room).name + " south of you");
+			}
+			else System.out.println("There is no room south of you.");
+		}
+		if (com.equals("e") || com.equals("look e")) {
+			if (roomList.get(currentRoom).e != null) {
+				String room=roomList.get(currentRoom).e;
+				System.out.print("There is " + roomList.get(room).name + " east of you");
+			}
+			else System.out.println("There is no room east of you.");
+		}
+		if (com.equals("w") || com.equals("look w")) {
+			if (roomList.get(currentRoom).w != null) {
+				String room=roomList.get(currentRoom).w;
+				System.out.print("There is " + roomList.get(room).name + " west of you");
+			}
+			else System.out.println("There is no room west of you.");
+		}
+		if (com.equals("u") || com.equals("look u")) {
+			if (roomList.get(currentRoom).u != null) {
+				String room=roomList.get(currentRoom).u;
+				System.out.print("There is " + roomList.get(room).name + " above you");
+			}
+			else System.out.println("There is no room above you.");
+		}
+		if (com.equals("d") || com.equals("look down")) {
+			if (roomList.get(currentRoom).d != null) {
+				String room=roomList.get(currentRoom).d;
+				System.out.print("There is " + roomList.get(room).name + " below you");
+			}
+			else System.out.println("There is no room below you.");
+		}
+
 
 	}
 
@@ -293,8 +391,7 @@ public class AdventureMain {
 	}
 
 	private void printHelp() {
-		// TODO Auto-generated method stub
-
+		System.out.print("North-n, East-e, West-w, Up-u, Down-d");
 	}
 	void breakObject(String  word2) {
 
@@ -353,10 +450,29 @@ public class AdventureMain {
 		}
 	}
 
-	void moveToRoom(char c) {
+	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
-
 		String message = "You cannot go that way.";
+		if (!checkGuard(currentRoom,c)) return false; //false = game over
+		if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
+			if (doorList.get(0).unlocked==false) {
+				System.out.print("You can not move there. Your cell door is locked.");
+				return true;
+			}
+		}
+		if(currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
+			if (doorList.get(1).unlocked==false) {
+				System.out.print("You can not move there. Your cell door is locked.");
+				return true;
+			}
+		}
+		if(currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
+			if (doorList.get(2).unlocked==false) {
+				System.out.print("You can not move there. Your cell door is locked.");
+				return true;
+			}
+		}
+
 
 		//north
 		if (c == 'n' && r.n != null) {
@@ -395,6 +511,56 @@ public class AdventureMain {
 		if(c == 'd' && r.d == null) System.out.println(message);
 
 		lookAtRoom(true);
+		return true;
+	}
+	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
+		if (w2.equals("door")) {
+			//cell door
+			//are they in the cell or the hallway outside it?
+			boolean haveKey=false;
+			for (Item inven: player.inventory) {
+				if(inven.name.equals("Key")) haveKey=true;
+			}
+			if("cell1".equals(doorList.get(0).loc1)||"hallway1".equals(doorList.get(0).loc2)) {
+				if (haveKey) {
+					doorList.get(0).unlocked=true;
+					System.out.print("Door unlocked");
+				}
+				else System.out.print("You don't have a key");
+			}
+		}
+	}
+
+	// check guard only
+	private boolean checkGuard(String currentRoom, char c) {
+		//don't look for specific room names, look if a Guard object is in the room
+		//and make sure that guard is awake -->>> lose
+		if(roomList.get(currentRoom).guard == Room.AWAKEGUARD && c=='e') {
+			System.out.println("The guard kills you");
+			return false;			
+		}
+		
+		return true;		
+	
+		
+	}
+
+	boolean changeClothes(String w2) {
+		if (w2.equals("clothes")) {
+			boolean a=false;
+			if (player.inventory.size()==0) a=false;
+			else {
+				for (Item inven: player.inventory) {
+					if (inven.name.equals("Clothes")) {
+						a= true;
+					}
+					else a=false;
+				}
+			}
+			if(a)player.inventory.remove("Clothes");
+			return a;
+		}
+		return false;
 	}
 
 }

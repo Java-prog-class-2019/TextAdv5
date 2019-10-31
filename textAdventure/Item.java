@@ -6,6 +6,7 @@ class Item {
 	String name = "";
 	String descr = "";
 	
+	
 	//constructor
 	Item(String s1, String s2) {
 		name = s1;
@@ -43,8 +44,10 @@ class Item {
 		
 		r = roomList.get("storage1");
 		r.items.add(wireClippers);
+				
+		r = roomList.get("hallway7");
+		r.items.add(keycard);
 		
-		//Keycard still need to be added to guard
 		
 	}
 	
