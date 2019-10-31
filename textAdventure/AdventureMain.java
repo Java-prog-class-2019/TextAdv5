@@ -154,6 +154,10 @@ public class AdventureMain {
 		case "drop":
 			dropItem(word2, word3);
 			break;
+
+		case "break":
+			breakObject(word2);
+			break;
 		case "take":
 			takeItem(word2, word3);
 			break;	
@@ -367,6 +371,48 @@ public class AdventureMain {
 	private void printHelp() {
 		System.out.print("North-n, East-e, West-w, Up-u, Down-d");
 	}
+	void breakObject(String  word2) {
+
+		//fix the != ... .equals
+		if (currentRoom !="SecurityRoom" && currentRoom != "electricRoom") {
+			//are there other rooms where you can break something?
+			System.out.println("There is nothing to break here");
+			return;
+		}
+
+		//you are in the correct room
+
+		if(word2 =="") {
+			System.out.print("Break computer Screen with what?");
+			String comm = getCommand().toLowerCase().trim();
+            word2=comm;
+		}
+		else {
+			if (word2 != "")
+				word2=word2 + " ";
+		
+		}
+
+		//see if object is in inventory
+		boolean invFound = false;
+		for (int i = 0; i < player.inventory.size(); i++) {
+			Item item = player.inventory.get(i);
+
+			if (item.name.equalsIgnoreCase(word2)) {				
+				invFound = true;			
+		System.out.print("Security Cameras and Computer screens smashed with Axe and you cannot be seen");
+			}
+	
+		if (!invFound) {
+			System.out.println("Sorry, you don't have " + word2 + " in your inventory");
+			
+		}
+		}
+		return;
+	//you have the object and you are in the correct room:
+	}
+
+
 
 	//tons of other methods go here ...		
 	void lookAtRoom(boolean x) {
