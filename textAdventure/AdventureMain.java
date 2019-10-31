@@ -159,16 +159,6 @@ public class AdventureMain {
 			breakObject(word2);
 			break;
 		case "take":
-			if (word2 == "") {	
-				System.out.print("take what?");
-				String comm = getCommand().toLowerCase().trim();
-				word2 = comm;
-				//				if (word2=="key") {
-				//					 Item key = roomList.get("cell1").items.get(0);
-				//						player.inventory.add(key);
-				//				}
-			} else {
-				if (word3 != "")	word2 = word2 + " " + word3;
 			takeItem(word2, word3);
 			break;	
 		case "use":
@@ -215,7 +205,6 @@ public class AdventureMain {
 						System.out.println("You wasted your sleeping dust. You nolonger have sleeping dust in your inventory");
 					}											
 				}
-
 			}
 			if(found == true){
 				System.out.println(".");
@@ -280,7 +269,6 @@ public class AdventureMain {
 		}
 
 		if (!found) System.out.println("There is no " + word2 + " here.");
-			break;
 
 	}
 
@@ -296,14 +284,6 @@ public class AdventureMain {
 		if (com.equals("here")) {
 			lookAtRoom(true);
 		}
-
-
-	void Addingitems() {
-		// TODO Auto-generated method stub
-		Item axe = roomList.get("cell3").items.get(0);//there is only one item in the room, so AXE will be in position 0
-		player.inventory.add(axe);
-		Item key = roomList.get("cell1").items.get(0);
-		player.inventory.add(key);
 
 		if (com.equals("n") || com.equals("look n")) {
 			if (roomList.get(currentRoom).n != null) {
