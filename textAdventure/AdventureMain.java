@@ -535,6 +535,7 @@ public class AdventureMain {
 				for (Item inven: player.inventory) {
 					if (inven.name.equals("Clothes")) {
 						a= true;
+						break;
 					}
 					else a=false;
 				}
