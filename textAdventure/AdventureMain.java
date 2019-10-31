@@ -169,8 +169,10 @@ public class AdventureMain {
 			else System.out.println("You have no clothes to change into");
 			break;
 		default:
-			System.out.println("Sorry, I don't understand that command");
+			System.out.println("Sorry, I don't understand that command");			
+			System.out.println(turns);
 		}
+		turns++;
 		if (currentRoom.equals("Guardroom")) {
 			System.out.println("YOU LOSE!!!");
 			return false;
@@ -453,9 +455,9 @@ public class AdventureMain {
 			}
 		}
 
-
 		//north
 		if (c == 'n' && r.n != null) {
+			System.out.println(turns);			
 			currentRoom = r.n;
 		}
 		if(c == 'n' && r.n == null) System.out.println(message);

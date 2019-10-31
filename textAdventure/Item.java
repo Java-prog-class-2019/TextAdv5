@@ -45,7 +45,7 @@ class Item {
 		r = roomList.get("storage1");
 		r.items.add(wireClippers);
 				
-		r = roomList.get("hallway7");
+		r = roomList.get("hallway5");
 		r.items.add(keycard);
 		
 		
