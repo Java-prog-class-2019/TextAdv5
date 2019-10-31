@@ -406,11 +406,10 @@ public class AdventureMain {
 				invFound = true;			
 		System.out.print("Security Cameras and Computer screens smashed with Axe and you cannot be seen");
 			}
-	
+		}
 		if (!invFound) {
 			System.out.println("Sorry, you don't have " + word2 + " in your inventory");
-			
-		}
+		
 		}
 		return;
 	//you have the object and you are in the correct room:
