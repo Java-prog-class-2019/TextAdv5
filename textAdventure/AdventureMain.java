@@ -500,16 +500,31 @@ public class AdventureMain {
 			//cell door
 			//are they in the cell or the hallway outside it?
 			boolean haveKey=false;
+			boolean haveKeyCard=false;
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Key")) haveKey=true;
+				if (inven.name.equals("keycard")) haveKeyCard=true;
 			}
-			if("cell1".equals(doorList.get(0).loc1)||"hallway1".equals(doorList.get(0).loc2)) {
+			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 				if (haveKey) {
 					doorList.get(0).unlocked=true;
 					System.out.print("Door unlocked");
 				}
 				else System.out.print("You don't have a key");
 			}
+			else if (currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
+				if (haveKeyCard) {
+					doorList.get(1).unlocked=true;
+				}
+				else System.out.println("You need a guard's key card to unlock this.");
+			}
+			else if (currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
+				if (haveKeyCard) {
+					doorList.get(2).unlocked=true;
+				}
+				else System.out.println("You need a guard's key card to unlock this.");
+			}
+			else System.out.println("There are no doors nearbye to unlock.");
 		}
 	}
 
