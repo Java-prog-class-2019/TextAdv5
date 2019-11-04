@@ -212,6 +212,7 @@ public class AdventureMain {
 		text = text.replaceAll("guard's uniform", "clothes");
 		text = text.replaceAll("uniform", "clothes");
 		text = text.replaceAll("throw", "use");
+		text = text.replaceAll(roomList.get(currentRoom).name.toLowerCase()+" ", "here"); //for look command doesn't work
 		return text;
 	}
 	
