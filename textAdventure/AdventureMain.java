@@ -101,7 +101,7 @@ public class AdventureMain {
 		text = text.replaceAll("climb up", "climbup");
 		text = text.replaceAll("open", "unlock");
 		text = text.replaceAll("move ", ""); //so it will work if the user types move north instead of just north
-		text = text.replaceAll("go", "");
+		text = text.replaceAll("go ", "");
 		text = text.replaceAll("change into", "change");
 		text = text.replaceAll("put on", "change");
 
