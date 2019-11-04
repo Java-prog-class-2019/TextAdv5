@@ -60,7 +60,7 @@ public class AdventureMain {
 	void setup() {
 		String welcome="Welcome to Scottsvale Prison in Kerwood, Ontario. Your name is" +
 				" Hergurt Hemsley and you are inmate 120192. You have been injustly sentenced "+
-					"to three years in prison for trespassing in a toothpaste factory. Now is your chance to escape."+
+					"to three years in prison for trespassing in a toothpaste factory. Some helpful friend has managed to smuggle a key into your room and now is your chance to escape."+
 				" Your goals is to break out of prison and win the freedom which has been so long denied of you.";
 		String [] words=welcome.split(" ");
 		for (int i=0;i<words.length;i++) {
