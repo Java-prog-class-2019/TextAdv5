@@ -36,7 +36,7 @@ public class AdventureMain {
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
-
+		System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 		lookAtRoom(true); //display information about the current room
 
 		/***** MAIN GAME LOOP *****/
@@ -46,7 +46,6 @@ public class AdventureMain {
 			command = getCommand();
 
 			playing = parseCommand(command, normClothes);
-			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//;check to see if the player has won the game
@@ -170,9 +169,9 @@ public class AdventureMain {
 			break;
 		default:
 			System.out.println("Sorry, I don't understand that command");			
-			System.out.println(turns);
 		}
 		turns++;
+		System.out.println("\nmoves: "+turns);
 		if (currentRoom.equals("Guardroom")) {
 			System.out.println("YOU LOSE!!!");
 			return false;
@@ -262,7 +261,7 @@ public class AdventureMain {
 			//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 			if (item.name.equalsIgnoreCase(word2)) {
 				player.inventory.add(item);
-
+				if (item.name.equals("Wire Clippers"))roomList.get("storage1").descr="You are in a storage room.";
 				roomList.get(currentRoom).items.remove(item);
 				System.out.println(word2 + " taken");
 				found = true;
@@ -441,22 +440,15 @@ public class AdventureMain {
 				return true;
 			}
 		}
-		if(currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
-			if (doorList.get(1).unlocked==false) {
-				System.out.print("You can not move there. Your cell door is locked.");
-				return true;
-			}
-		}
-		if(currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
-			if (doorList.get(2).unlocked==false) {
-				System.out.print("You can not move there. Your cell door is locked.");
-				return true;
-			}
-		}
 
 		//north
 		if (c == 'n' && r.n != null) {
-			System.out.println(turns);			
+			if(currentRoom.equals(doorList.get(1).loc1)) {
+				if (doorList.get(1).unlocked==false) {
+					System.out.print("You can not move there. There is a blocked door blocking your way.");
+					return true;
+				}
+			}
 			currentRoom = r.n;
 		}
 		if(c == 'n' && r.n == null) System.out.println(message);
@@ -475,8 +467,15 @@ public class AdventureMain {
 
 		//west
 		if (c == 'w' && r.w != null) {
+			if(currentRoom.equals(doorList.get(2).loc1)) {
+				if (doorList.get(2).unlocked==false) {
+					System.out.print("You can not move there. There is a blocked door blocking your way.");
+					return true;
+				}
+			}
 			currentRoom = r.w;
 		}
+		//hi
 		if(c == 'w' && r.w == null) System.out.println(message);
 
 		//up
@@ -490,7 +489,7 @@ public class AdventureMain {
 			currentRoom=r.d;
 		}
 		if(c == 'd' && r.d == null) System.out.println(message);
-
+		System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 		lookAtRoom(true);
 		return true;
 	}
@@ -499,16 +498,33 @@ public class AdventureMain {
 			//cell door
 			//are they in the cell or the hallway outside it?
 			boolean haveKey=false;
+			boolean haveKeyCard=false;
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Key")) haveKey=true;
+				if (inven.name.equals("Keycard")) haveKeyCard=true;
 			}
-			if("cell1".equals(doorList.get(0).loc1)||"hallway1".equals(doorList.get(0).loc2)) {
+			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 				if (haveKey) {
 					doorList.get(0).unlocked=true;
 					System.out.print("Door unlocked");
 				}
 				else System.out.print("You don't have a key");
 			}
+			else if (currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
+				if (haveKeyCard) {
+					doorList.get(1).unlocked=true;
+					System.out.print("Door unlocked");
+				}
+				else System.out.println("You need a guard's key card to unlock this.");
+			}
+			else if (currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
+				if (haveKeyCard) {
+					doorList.get(2).unlocked=true;
+					System.out.print("Door unlocked");
+				}
+				else System.out.println("You need a guard's key card to unlock this.");
+			}
+			else System.out.println("There are no doors nearbye to unlock.");
 		}
 	}
 
