@@ -30,6 +30,7 @@ public class AdventureMain {
 	}
 
 	AdventureMain() {
+	//	System.out.println("");
 
 		boolean playing = true;
 		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
@@ -37,7 +38,7 @@ public class AdventureMain {
 
 		setup(); //create all objects needed, including map; print intro. message
 		System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
-		lookAtRoom(true); //display information about the current room
+		lookAtRoom(false); //display information about the current room
 
 		/***** MAIN GAME LOOP *****/
 		while (playing) {
@@ -53,10 +54,7 @@ public class AdventureMain {
 				playing = false;
 			}
 		}
-
-
 		// does anything need to be done after th emain game loop exits?
-
 	}
 
 	void setup() {
@@ -417,17 +415,20 @@ public class AdventureMain {
 
 
 	//tons of other methods go here ...		
-	void lookAtRoom(boolean x) {
+	void lookAtRoom(boolean showitems) {
 		String text = roomList.get(currentRoom).descr;
 		System.out.println(text);
-
-		//list items in room
-		if (roomList.get(currentRoom).items.size() > 0 ) {
+		
+		//list items in room only if the player types in look		
+		if (showitems){
+			if (roomList.get(currentRoom).items.size() > 0 ) {
 			System.out.println("The room contains:");
 		}
-		for (Item item : roomList.get(currentRoom).items) {
+			for (Item item : roomList.get(currentRoom).items) {
 			System.out.println(item.name + ": " + item.descr);
+			}
 		}
+		
 	}
 
 	boolean moveToRoom(char c) {
@@ -489,7 +490,7 @@ public class AdventureMain {
 		}
 		if(c == 'd' && r.d == null) System.out.println(message);
 		System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
-		lookAtRoom(true);
+		lookAtRoom(false);
 		return true;
 	}
 	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
@@ -501,6 +502,10 @@ public class AdventureMain {
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Key")) haveKey=true;
 				if (inven.name.equals("Keycard")) haveKeyCard=true;
+			}
+			Room r = roomList.get(currentRoom);
+			if (haveKey) {
+				r.descr = "This was your orignial cell";
 			}
 			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 				if (haveKey) {
