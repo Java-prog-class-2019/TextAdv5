@@ -141,7 +141,7 @@ class Room {
 		r.n="storage1";
 		roomList.put("storage2", r);
 		
-		r=new Room("Electric room","You are in the electric room. You see a panel of electric wires that control the electric fence.");
+		r=new Room("Electric room","You are in the electric room. You see a panel of wires that control the electric fence.");
 		r.s="storage1";
 		roomList.put("electricRoom", r);
 		

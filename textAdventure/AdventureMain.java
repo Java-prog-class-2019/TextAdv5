@@ -24,6 +24,7 @@ public class AdventureMain {
 	Player player;
 
 	int turns = 0;
+	boolean fenceOff = false;
 
 	public static void main(String[]args){
 		new AdventureMain();
@@ -33,6 +34,7 @@ public class AdventureMain {
 
 		boolean playing = true;
 		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
+		
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
@@ -116,7 +118,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
-		
+
 		String word1 = words[0];
 		String word2 = "";
 		String word3 = "";
@@ -161,11 +163,14 @@ public class AdventureMain {
 			takeItem(word2, word3);
 			break;	
 		case "use":
-		useSleepinggas(word2, word3);break;
+			useSleepinggas(word2, word3);break;
 		case "change":
 			normClothes=changeClothes(word2);
 			if (normClothes) System.out.println("You are now wearing a guard uniform");
 			else System.out.println("You have no clothes to change into");
+			break;
+		case "cut":
+			fenceOff = cutWires(word2);
 			break;
 		default:
 			System.out.println("Sorry, I don't understand that command");			
@@ -178,6 +183,43 @@ public class AdventureMain {
 		}
 		return true;
 	}	
+
+	private boolean cutWires(String word2) {
+		if (word2 == "") {
+			System.out.println("cut what");
+			String cut = getCommand().toLowerCase().trim();
+			word2 = cut;
+		}
+		boolean found=false;
+		Room r = roomList.get(currentRoom);
+		if(word2.equals("wires") || word2.equals("wire")) {
+			for (int i = 0; i < player.inventory.size(); i++) {
+				Item item = player.inventory.get(i);			
+				if (item.name.equals("Wire Clippers")) {
+					found = true;
+					if(r.name=="Electric room") {
+						System.out.println("You cut wires with wire clippers. The electric fence is now off. RUN FOR YOUR FREEDOM!");
+						//TODO change the exits in the room where the electric fence is to allow people to leave. Excercise Yard and also change the description
+						Room r2 = roomList.get("Exercise Yard");
+						r2.descr = "The fence is now off";
+						return true;
+					}else {							
+						System.out.println("There is no wire to cut here.");
+						return false;
+					}											
+				}
+			}
+			if(found == false){
+				System.out.println("You don't have a wire clipper to cut the wire.");
+				return false;
+			}
+		}else {
+			System.out.println("You can't cut that" );
+			return false;
+		}
+
+		return false;
+	}
 
 	private void useSleepinggas(String word2, String word3) {
 		if (word2 == "") {
@@ -221,7 +263,7 @@ public class AdventureMain {
 				System.out.println("...");
 			}
 		}
-		
+
 
 	}
 
@@ -388,12 +430,12 @@ public class AdventureMain {
 		if(word2 =="") {
 			System.out.print("Break computer Screen with what?");
 			String comm = getCommand().toLowerCase().trim();
-            word2=comm;
+			word2=comm;
 		}
 		else {
 			if (word2 != "")
 				word2=word2 + " ";
-		
+
 		}
 
 		//see if object is in inventory
@@ -403,15 +445,15 @@ public class AdventureMain {
 
 			if (item.name.equalsIgnoreCase(word2)) {				
 				invFound = true;			
-		System.out.print("Security Cameras and Computer screens smashed with Axe and you cannot be seen");
+				System.out.print("Security Cameras and Computer screens smashed with Axe and you cannot be seen");
 			}
 		}
 		if (!invFound) {
 			System.out.println("Sorry, you don't have " + word2 + " in your inventory");
-		
+
 		}
 		return;
-	//you have the object and you are in the correct room:
+		//you have the object and you are in the correct room:
 	}
 
 
@@ -432,6 +474,7 @@ public class AdventureMain {
 
 	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
+		
 		String message = "You cannot go that way.";
 		if (!checkGuard(currentRoom,c)) return false; //false = game over
 		if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
@@ -441,6 +484,8 @@ public class AdventureMain {
 			}
 		}
 
+		//TODO see if you win the game
+		
 		//north
 		if (c == 'n' && r.n != null) {
 			if(currentRoom.equals(doorList.get(1).loc1)) {
@@ -535,10 +580,10 @@ public class AdventureMain {
 			System.out.println("The guard kills you");
 			return false;			
 		}
-		
+
 		return true;		
-	
-		
+
+
 	}
 
 	boolean changeClothes(String w2) {
