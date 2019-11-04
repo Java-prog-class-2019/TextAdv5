@@ -153,9 +153,6 @@ public class AdventureMain {
 		case "i": case "inventory":
 			showInventory();
 			break;
-		case "sleep":
-			//		sleep();			
-			break;	
 		case "help":
 			printHelp();
 			break;
@@ -576,6 +573,7 @@ public class AdventureMain {
 			}
 			else System.out.println("There are no doors nearbye to unlock.");
 		}
+		else System.out.println("Sorry, I don't understand that command");
 	}
 
 	// check guard only
