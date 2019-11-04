@@ -60,6 +60,16 @@ public class AdventureMain {
 	}
 
 	void setup() {
+		String welcome="Welcome to Scottsvale Prison in Kerwood, Ontario. Your name is" +
+				" Hergurt Hemsley and you are inmate 120192. You have been injustly sentenced "+
+					"to three years in prison for trespassing in a toothpaste factory. Now is your chance to escape."+
+				" Your goals is to break out of prison and win the freedom which has been so long denied of you.";
+		String [] words=welcome.split(" ");
+		for (int i=0;i<words.length;i++) {
+			System.out.print(words[i]+" ");
+			if ((i+1)%12==0) System.out.println("");
+		}
+		System.out.println("");
 		Room.setupRooms(roomList,doorList);
 		Item.setUpItems(itemList, roomList);
 		Doors.setUpDoors(doorList);
@@ -372,6 +382,11 @@ public class AdventureMain {
 	}
 
 	private void printHelp() {
+		boolean haveKey=false;
+		for (Item inven: player.inventory) {
+			if(inven.name.equals("Key")) haveKey=true;
+		}
+		if (!haveKey)System.out.println("Type in \"look here\" to display items in room and tpye in \"take\" to pick up the key. you can then use this to open the door");
 		System.out.print("North-n, East-e, West-w, Up-u, Down-d");
 	}
 	void breakObject(String  word2) {
