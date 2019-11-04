@@ -23,7 +23,7 @@ class Item {
 		
 		Item chair = new Item("Chair", "A well crafted chair that looks very durable.");
 		
-		Item wireClippers = new Item("Wire Clippers", "A wire clippers.");
+		Item wireClippers = new Item("Wire Clippers", "A shiny pair of wire clippers which look sharp enough to disable the electric fence computers.");
 		
 		Item keycard = new Item("Keycard", "A keycard that can be used to unlock a door.");
 
@@ -45,7 +45,7 @@ class Item {
 		r = roomList.get("storage1");
 		r.items.add(wireClippers);
 				
-		r = roomList.get("hallway5");
+		r = roomList.get("hallway7");
 		r.items.add(keycard);
 		
 		

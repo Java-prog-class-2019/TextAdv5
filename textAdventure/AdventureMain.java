@@ -36,7 +36,7 @@ public class AdventureMain {
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
-
+		System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 		lookAtRoom(true); //display information about the current room
 
 		/***** MAIN GAME LOOP *****/
@@ -46,7 +46,6 @@ public class AdventureMain {
 			command = getCommand();
 
 			playing = parseCommand(command, normClothes);
-			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//;check to see if the player has won the game
@@ -170,9 +169,9 @@ public class AdventureMain {
 			break;
 		default:
 			System.out.println("Sorry, I don't understand that command");			
-			System.out.println(turns);
 		}
 		turns++;
+		System.out.println("\nmoves: "+turns);
 		if (currentRoom.equals("Guardroom")) {
 			System.out.println("YOU LOSE!!!");
 			return false;
@@ -262,7 +261,7 @@ public class AdventureMain {
 			//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 			if (item.name.equalsIgnoreCase(word2)) {
 				player.inventory.add(item);
-
+				if (item.name.equals("Wire Clippers"))roomList.get("storage1").descr="You are in a storage room.";
 				roomList.get(currentRoom).items.remove(item);
 				System.out.println(word2 + " taken");
 				found = true;
@@ -445,7 +444,6 @@ public class AdventureMain {
 
 		//north
 		if (c == 'n' && r.n != null) {
-			System.out.println(turns);
 			if(currentRoom.equals(doorList.get(1).loc1)) {
 				if (doorList.get(1).unlocked==false) {
 					System.out.print("You can not move there. There is a blocked door blocking your way.");
@@ -491,7 +489,7 @@ public class AdventureMain {
 			currentRoom=r.d;
 		}
 		if(c == 'd' && r.d == null) System.out.println(message);
-
+		System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
 		lookAtRoom(true);
 		return true;
 	}
