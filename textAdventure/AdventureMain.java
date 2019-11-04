@@ -24,6 +24,7 @@ public class AdventureMain {
 	Player player;
 
 	int turns = 0;
+	boolean normClothes=false;//this is a gloabl variable bc it is used in methods within methods that already return values.
 
 	public static void main(String[]args){
 		new AdventureMain();
@@ -33,7 +34,6 @@ public class AdventureMain {
 	//	System.out.println("");
 
 		boolean playing = true;
-		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
@@ -46,13 +46,14 @@ public class AdventureMain {
 
 			command = getCommand();
 
-			playing = parseCommand(command, normClothes);
+			playing = parseCommand(command);
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//;check to see if the player has won the game
 			if (currentRoom.equals("Guardroom")) {
 				playing = false;
 			}
+			playing=guardClothes(playing);
 		}
 		// does anything need to be done after th emain game loop exits?
 	}
@@ -79,6 +80,26 @@ public class AdventureMain {
 
 
 	}
+	boolean guardClothes(boolean playing) {
+		playing=true;
+		if (turns==30) {
+			if(!normClothes)System.out.println("Beware: if you do not change out of your prison clothes and into \n"+
+					"other clothes soon you will die");
+		}
+		if (turns==35) {
+			if (!normClothes) {
+				System.out.println("A guard has walked into the "+roomList.get(currentRoom).name+" - the same room you are in!"+
+						"\nThe guard realizes that you are an escaped prisoner because you are still \n"+
+						"wearing a bright orange prisoner's uniform. You die!");
+				playing=false;
+			}
+			else {
+				System.out.println("A guard enters the same room you are in, but luckily "+
+						" you \nare weaing a guard uniform and there is only one guard, \nand so you go undetected. The guard leaves the room again.");
+			}
+		}
+		return playing;
+	}
 
 	String getCommand() {
 		Scanner sc = new Scanner(System.in);		
@@ -89,7 +110,7 @@ public class AdventureMain {
 	}
 
 
-	boolean parseCommand(String text, boolean normClothes) {
+	boolean parseCommand(String text) {
 
 		/***** PREPROCESSING *****/
 		//P1. 
@@ -172,7 +193,10 @@ public class AdventureMain {
 		useSleepinggas(word2, word3);break;
 		case "change":
 			normClothes=changeClothes(word2);
-			if (normClothes) System.out.println("You are now wearing a guard uniform");
+			if (normClothes) {
+				this.normClothes=true;
+				System.out.println("You are now wearing a guard uniform");
+			}
 			else System.out.println("You have no clothes to change into");
 			break;
 		default:
