@@ -475,7 +475,6 @@ public class AdventureMain {
 			}
 			currentRoom = r.w;
 		}
-		//hi
 		if(c == 'w' && r.w == null) System.out.println(message);
 
 		//up
