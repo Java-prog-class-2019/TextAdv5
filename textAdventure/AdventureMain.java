@@ -121,20 +121,7 @@ public class AdventureMain {
 
 
 		//P2. word replacement
-		text = text.replaceAll(" into ", " in ");
-		text = text.replaceAll("pick up", "take");
-		text = text.replaceAll("sleepingdust", "sleeping dust");
-		text = text.replaceAll("pick up", "pickup");
-		text = text.replaceAll(" rocks", " rock");
-		text = text.replaceAll("look at", "lookat");
-		text = text.replaceAll("climb up", "climbup");
-		text = text.replaceAll("open", "unlock");
-		text = text.replaceAll("move ", ""); //so it will work if the user types move north instead of just north
-		text = text.replaceAll("go ", "");
-		text = text.replaceAll("change into", "change");
-		text = text.replaceAll("put on", "change");
-
-		text = text.replaceAll("throw", "use");
+		text = textReplacement(text);
 		String words[] = text.split(" ");
 
 		//P3. remove all instances of "THE"
@@ -210,7 +197,27 @@ public class AdventureMain {
 		}
 		return true;
 	}	
-
+	
+	String textReplacement(String text) {
+		text = text.replaceAll(" into ", " in ");
+		text = text.replaceAll("pick up", "take");
+		text = text.replaceAll("sleepingdust", "sleeping dust");
+		text = text.replaceAll("pick up", "pickup");
+		text = text.replaceAll(" rocks", " rock");
+		text = text.replaceAll("look at", "lookat");
+		text = text.replaceAll("climb up", "climbup");
+		text = text.replaceAll("open", "unlock");
+		text = text.replaceAll("move ", ""); //so it will work if the user types move north instead of just north
+		text = text.replaceAll("go ", "");
+		text = text.replaceAll("change into", "change");
+		text = text.replaceAll("put on", "change");
+		text = text.replaceAll("guard uniform", "clothes");
+		text = text.replaceAll("guard's uniform", "clothes");
+		text = text.replaceAll("uniform", "clothes");
+		text = text.replaceAll("throw", "use");
+		return text;
+	}
+	
 	private void useSleepinggas(String word2, String word3) {
 		if (word2 == "") {
 			System.out.println("use what");
