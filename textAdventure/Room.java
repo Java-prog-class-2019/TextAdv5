@@ -29,7 +29,7 @@ class Room {
 	static void setupRooms(HashMap<String,Room> roomList, ArrayList<Doors> doorList) {
 		//cell1
 		Room r = new Room("Your Cell",
-				"You find yourself in a dingy prison cell. The door out of your cell, which is to the north of you, is locked.");
+				"You find yourself in a dingy prison cell. The door out of your cell, is to the north of you. \nThere's a shiny, golden key on the table!");
 		r.n = ("hallway1");	
 		roomList.put("cell1", r);
 		

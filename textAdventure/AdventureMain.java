@@ -198,7 +198,6 @@ public class AdventureMain {
 	}	
 	
 	String textReplacement(String text) {
-		text = text.replaceAll(" into ", " in ");
 		text = text.replaceAll("pick up", "take");
 		text = text.replaceAll("sleepingdust", "sleeping dust");
 		text = text.replaceAll("pick up", "pickup");
@@ -206,8 +205,8 @@ public class AdventureMain {
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
 		text = text.replaceAll("open", "unlock");
-		text = text.replaceAll("move ", ""); //so it will work if the user types move north instead of just north
-		text = text.replaceAll("go ", "");
+		text = text.replaceAll("move", ""); //so it will work if the user types move north instead of just north
+		text = text.replaceAll("go", "");
 		text = text.replaceAll("change into", "change");
 		text = text.replaceAll("put on", "change");
 		text = text.replaceAll("guard uniform", "clothes");
@@ -216,6 +215,7 @@ public class AdventureMain {
 		text = text.replaceAll("throw", "use");
 		text = text.replaceAll(roomList.get(currentRoom).name.toLowerCase().trim(), "here"); //for look command doesn't work
 		text = text.replaceAll("search", "look");
+		text = text.replaceAll("gate", "door");
 		return text;
 	}
 	
@@ -302,6 +302,7 @@ public class AdventureMain {
 			if (item.name.equalsIgnoreCase(word2)) {
 				player.inventory.add(item);
 				if (item.name.equals("Wire Clippers"))roomList.get("storage1").descr="You are in a storage room.";
+				if (item.name.equals("Key"))roomList.get("cell1").descr="You are in your cell. There is one door to the north.";
 				roomList.get(currentRoom).items.remove(item);
 				System.out.println(word2 + " taken");
 				found = true;
@@ -482,18 +483,18 @@ public class AdventureMain {
 		Room r = roomList.get(currentRoom);
 		String message = "You cannot go that way.";
 		if (!checkGuard(currentRoom,c)) return false; //false = game over
-		if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
-			if (doorList.get(0).unlocked==false) {
-				System.out.print("You can not move there. Your cell door is locked.");
-				return true;
-			}
-		}
 
 		//north
 		if (c == 'n' && r.n != null) {
 			if(currentRoom.equals(doorList.get(1).loc1)) {
 				if (doorList.get(1).unlocked==false) {
 					System.out.print("You can not move there. There is a blocked door blocking your way.");
+					return true;
+				}
+			}
+			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
+				if (doorList.get(0).unlocked==false) {
+					System.out.print("You can not move there. Your cell door is locked.");
 					return true;
 				}
 			}
