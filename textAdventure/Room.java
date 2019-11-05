@@ -29,7 +29,7 @@ class Room {
 	static void setupRooms(HashMap<String,Room> roomList, ArrayList<Doors> doorList) {
 		//cell1
 		Room r = new Room("Your Cell",
-				"You find yourself in a dingy prison cell. The door out of your cell, which is to the north of you, is locked.");
+				"You find yourself in a dingy prison cell. The door out of your cell, is to the north of you. \nThere's a shiny, golden key on the table!");
 		r.n = ("hallway1");	
 		roomList.put("cell1", r);
 		
@@ -130,7 +130,7 @@ class Room {
 		r.u="hallway8";
 		roomList.put("stairs", r);
 		
-		r=new Room("Storage room","You are in the storage room. You see a wireclipper on a rusty rack.");
+		r=new Room("Storage room","You are in the storage room. There are three rooms nearbye \nand stairs to the west. You see a wireclipper on a rusty rack.");
 		r.w="stairs";
 		r.e="panicRoom";
 		r.s="storage2";
@@ -145,7 +145,7 @@ class Room {
 		r.s="storage1";
 		roomList.put("electricRoom", r);
 		
-		r=new Room("Panic room","You are in the panic room. It looks abandoned a long time ago... Who knows why this room even exist!!!");
+		r=new Room("Panic room","You are in the panic room. It looks like it was abandoned a long time ago... Who knows why this room even exist!!!");
 		r.w="storage1";
 		roomList.put("panicRoom", r);
 	}
