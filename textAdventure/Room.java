@@ -120,6 +120,8 @@ class Room {
 		r=new Room("Exercise Yard","You are in a grassy field. A tall electric fence on the north side of the field separates you from the outside world");
 		r.s="cafeteria";
 		roomList.put("ExerciseYard", r);
+		r=new Room("Outside World","You have escaped from the prison!");
+		roomList.put("OutsideWorld", r);
 		
 		
 		

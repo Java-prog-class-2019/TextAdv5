@@ -34,7 +34,7 @@ public class AdventureMain {
 
 		boolean playing = true;
 		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
-		
+
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
@@ -199,9 +199,10 @@ public class AdventureMain {
 					found = true;
 					if(r.name=="Electric room") {
 						System.out.println("You cut wires with wire clippers. The electric fence is now off. RUN FOR YOUR FREEDOM!");
-						//TODO change the exits in the room where the electric fence is to allow people to leave. Excercise Yard and also change the description
-						Room r2 = roomList.get("Exercise Yard");
-						r2.descr = "The fence is now off";
+						//change the exits in the room where the electric fence is to allow people to leave. Excercise Yard and also change the description
+						Room r2 = roomList.get("ExerciseYard");
+						r2.descr = "You are in a grassy field. A tall electric fence on the north side of the field separates you from the outside world. However, it seems to be turned off.";
+						r2.n="OutsideWorld";
 						return true;
 					}else {							
 						System.out.println("There is no wire to cut here.");
@@ -472,9 +473,13 @@ public class AdventureMain {
 		}
 	}
 
+	/* This method handles all movement between rooms.
+	 * It takes a single character for direction (n,w,e,su,d)
+	 * It returns a boolean: true means 		false means
+	 */
 	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
-		
+
 		String message = "You cannot go that way.";
 		if (!checkGuard(currentRoom,c)) return false; //false = game over
 		if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
@@ -483,9 +488,28 @@ public class AdventureMain {
 				return true;
 			}
 		}
-
-		//TODO see if you win the game
 		
+		if(currentRoom.equals("ExerciseYard") && c=='n') {
+			boolean invFound = false;
+			for (int i = 0; i < player.inventory.size(); i++) {
+				Item item = player.inventory.get(i);
+				if (item.name.equalsIgnoreCase("Chair")) invFound = true;					
+			}
+			if(invFound && fenceOff) {
+				currentRoom = r.n;
+				lookAtRoom(true);
+				return true;
+			}
+			if (!invFound) {
+				System.out.println("You are not tall enough to climb over the fence.");
+				return true;
+			}
+			else {
+				System.out.println("The electric fence is still on.");
+			}
+			
+		}
+
 		//north
 		if (c == 'n' && r.n != null) {
 			if(currentRoom.equals(doorList.get(1).loc1)) {
@@ -534,6 +558,15 @@ public class AdventureMain {
 		}
 		if(c == 'd' && r.d == null) System.out.println(message);
 		System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
+
+
+
+//		see if you win the game
+//		if(currentRoom.equals("OutsideWorld")) {
+//			System.out.println("YOU WIN!");
+//
+//		}
+
 		lookAtRoom(true);
 		return true;
 	}
