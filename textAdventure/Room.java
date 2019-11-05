@@ -130,7 +130,7 @@ class Room {
 		r.u="hallway8";
 		roomList.put("stairs", r);
 		
-		r=new Room("Storage room","You are in the storage room. You see a wireclipper on a rusty rack.");
+		r=new Room("Storage room","You are in the storage room. There are three rooms nearbye \nand stairs to the west. You see a wireclipper on a rusty rack.");
 		r.w="stairs";
 		r.e="panicRoom";
 		r.s="storage2";
@@ -145,7 +145,7 @@ class Room {
 		r.s="storage1";
 		roomList.put("electricRoom", r);
 		
-		r=new Room("Panic room","You are in the panic room. It looks abandoned a long time ago... Who knows why this room even exist!!!");
+		r=new Room("Panic room","You are in the panic room. It looks like it was abandoned a long time ago... Who knows why this room even exist!!!");
 		r.w="storage1";
 		roomList.put("panicRoom", r);
 	}

@@ -104,6 +104,8 @@ public class AdventureMain {
 	String getCommand() {
 		Scanner sc = new Scanner(System.in);		
 		String text = sc.nextLine();
+		text = text.toLowerCase().trim();
+		text = textReplacement(text);
 		if (text.length() == 0) text = "qwerty"; //default command
 		//sc.close();
 		return text;
@@ -127,17 +129,17 @@ public class AdventureMain {
 		//P3. remove all instances of "THE"
 		ArrayList<String> wordlist = new ArrayList<String>(Arrays.asList(words));		//array list of words
 		for(int i=0; i< wordlist.size(); i++) {
-			if (wordlist.get(i).equals("the")) wordlist.remove(i--);			
+			if (wordlist.get(i).equals("the")||wordlist.get(i).equals("in")) wordlist.remove(i--);			
 		}
 
 		//separate out into word1, word2, etc.
 		// ...
 		
-		String word1 = words[0];
+		String word1 = wordlist.get(0);
 		String word2 = "";
 		String word3 = "";
-		if (words.length>1)	word2 = words[1];
-		if (words.length>2)	word3 = words[2];
+		if (wordlist.size()>1)	word2 = wordlist.get(1);
+		if (wordlist.size()>2)	word3 = wordlist.get(2);
 
 		/***** MAIN PROCESSING *****/
 		switch(word1) {
@@ -212,7 +214,8 @@ public class AdventureMain {
 		text = text.replaceAll("guard's uniform", "clothes");
 		text = text.replaceAll("uniform", "clothes");
 		text = text.replaceAll("throw", "use");
-		text = text.replaceAll(roomList.get(currentRoom).name.toLowerCase()+" ", "here"); //for look command doesn't work
+		text = text.replaceAll(roomList.get(currentRoom).name.toLowerCase().trim(), "here"); //for look command doesn't work
+		text = text.replaceAll("search", "look");
 		return text;
 	}
 	
