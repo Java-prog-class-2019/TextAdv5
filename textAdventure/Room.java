@@ -112,8 +112,6 @@ class Room {
 		roomList.put("LaundryRoom", r);
 		//cafeteria
 		r=new Room("Cafeteria", "There is a security camera in this room and you are caught on camera. YOU LOSE!!!");
-		//we want this option for the cafteria if the security camera is turned off
-		//r=new Room("Cafeteria", "There is a security camera, but it is turned off. The room is filled with tables and chairs.");
 		r.s="hallway3";
 		r.n="ExerciseYard";
 		roomList.put("cafeteria", r);

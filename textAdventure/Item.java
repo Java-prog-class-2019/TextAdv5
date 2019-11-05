@@ -26,6 +26,8 @@ class Item {
 		Item wireClippers = new Item("Wire Clippers", "A shiny pair of wire clippers which look sharp enough to disable the electric fence computers.");
 		
 		Item keycard = new Item("Keycard", "A keycard that can be used to unlock a door.");
+		
+		Item avocado = new Item("Avocado", "A delishous looking vegetable specimen of bright green hue.");
 
 		Room r = roomList.get("cell1");
 		r.items.add(key);	//and here the item is added to the specific room that you want it in.
@@ -47,6 +49,9 @@ class Item {
 				
 		r = roomList.get("hallway7");
 		r.items.add(keycard);
+		
+		r = roomList.get("cafeteria");
+		r.items.add(avocado);
 		
 		
 	}

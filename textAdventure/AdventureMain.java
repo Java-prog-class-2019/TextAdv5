@@ -82,7 +82,7 @@ public class AdventureMain {
 	}
 	boolean guardClothes(boolean playing) {
 		playing=true;
-		if (turns==30) {
+		if (turns==25) {
 			if(!normClothes)System.out.println("Beware: if you do not change out of your prison clothes and into \n"+
 					"other clothes soon you will die");
 		}
@@ -200,6 +200,8 @@ public class AdventureMain {
 	String textReplacement(String text) {
 		text = text.replaceAll("pick up", "take");
 		text = text.replaceAll("sleepingdust", "sleeping dust");
+		text = text.replaceAll("powder", "dust");
+		text = text.replaceAll("blue dust", "sleeping dust");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll(" rocks", " rock");
 		text = text.replaceAll("look at", "lookat");
@@ -216,6 +218,7 @@ public class AdventureMain {
 		text = text.replaceAll(roomList.get(currentRoom).name.toLowerCase().trim(), "here"); //for look command doesn't work
 		text = text.replaceAll("search", "look");
 		text = text.replaceAll("gate", "door");
+		text = text.replaceAll("room", "here");
 		return text;
 	}
 	
@@ -238,7 +241,7 @@ public class AdventureMain {
 					if(roomList.get(currentRoom).guard == Room.AWAKEGUARD) {
 						r.guard = Room.SLEEPINGGUARD;			
 						r.descr = "You are in a section of hallway which now contains Sleeping guard" + "walk quietly past him"	;							
-						System.out.println("You use sleeping dust. The guard is now asleep. You spot a key card hanging off the guard's belt");
+						System.out.println("You use sleeping dust. The guard is now asleep. A keycard has fallen from the pocket of the \nguard - who is now asleep - and is lying in the section of hallway directly to the east of you.");
 						player.inventory.remove(item);	
 					}else {							
 						if(item.name.equals("Sleeping Dust"))
@@ -449,7 +452,8 @@ public class AdventureMain {
 
 			if (item.name.equalsIgnoreCase(word2)) {				
 				invFound = true;			
-		System.out.print("Security Cameras and Computer screens smashed with Axe and you cannot be seen");
+		System.out.print("Security Cameras and Computer screens smashed with Axe");
+		roomList.get("cafeteria").descr="There is a security camera, but it is turned off. The room is filled with tables and chairs. \nThere's an avocado on one of the tables! (Crazy!)";
 			}
 		}
 		if (!invFound) {
