@@ -418,7 +418,7 @@ public class AdventureMain {
 			if(inven.name.equals("Key")) haveKey=true;
 		}
 		if (!haveKey)System.out.println("Type in \"look here\" to display items in room and tpye in \"take\" to pick up the key. You can then use this to open the door.");
-		System.out.print("North-n, East-e, West-w, Up-u, Down-d");
+		System.out.print("North-n, East-e, West-w, Up-u, Down-d, inventory-i");
 	}
 	void breakObject(String  word2) {
 
