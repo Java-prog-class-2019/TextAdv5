@@ -125,10 +125,6 @@ public class AdventureMain {
 		//P1. 
 		text = text.toLowerCase().trim();	//the complete string BEFORE parsing
 
-
-		//handle situation where no words entered ...
-
-
 		//P2. word replacement
 		text = textReplacement(text);
 		String words[] = text.split(" ");
@@ -139,9 +135,7 @@ public class AdventureMain {
 			if (wordlist.get(i).equals("the")||wordlist.get(i).equals("in")||wordlist.get(i).equals("with")) wordlist.remove(i--);			
 		}
 
-		//separate out into word1, word2, etc.
-		// ...
-
+		//P4. separate out into word1, word2, etc.
 		String word1 = wordlist.get(0);
 		String word2 = "";
 		String word3 = "";
@@ -245,11 +239,15 @@ public class AdventureMain {
 
 
 	private boolean cutWires(String word2) {
+		//if the command it just "cut" it asks what they are talking about
 		if (word2 == "") {
-			System.out.println("cut what");
+			System.out.println("cut what?");
 			String cut = getCommand().toLowerCase().trim();
 			word2 = cut;
 		}
+		/*checks to see if their are wireclippers in the inventory. If there are, and the player is in
+		 * the electric room, then the electric fence is turned off.  
+		 */
 		boolean found=false;
 		Room r = roomList.get(currentRoom);
 		if(word2.equals("wires") || word2.equals("wire")) {
@@ -278,11 +276,12 @@ public class AdventureMain {
 			System.out.println("You can't cut that" );
 			return false;
 		}
-
 		return false;
 	}
 
+	//This method allows the user to put the single guard in the hallway to sleep.	
 	private void useSleepinggas(String word2, String word3) {
+		//handles case if the user only enters "use"
 		if (word2 == "") {
 			System.out.println("use what");
 			String use = getCommand().toLowerCase().trim();
@@ -291,6 +290,7 @@ public class AdventureMain {
 		else {
 			if (word3 != "") word2 = word2 + " " + word3;
 		}
+		//checks to see if the sleeping is in the inventory
 		boolean found=false;
 		Room r = roomList.get(currentRoom);
 		if(word2.equals("sleepingdust") || word2.equals("sleeping dust")) {					
