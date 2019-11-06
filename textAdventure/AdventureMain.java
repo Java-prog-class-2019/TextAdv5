@@ -46,7 +46,6 @@ public class AdventureMain {
 		/***** MAIN GAME LOOP *****/
 		while (playing) {
 
-
 			command = getCommand();
 
 			playing = parseCommand(command);
@@ -56,7 +55,12 @@ public class AdventureMain {
 			if (currentRoom.equals("Guardroom")) {
 				playing = false;
 			}
-			playing=guardClothes(playing);
+			//System.out.println(currentRoom);
+			if (currentRoom.equals("cafeteria")&&cafCameraOff==false) {
+				playing=false;
+				return;
+			}
+			else playing=guardClothes(playing);
 		}
 		// does anything need to be done after th emain game loop exits?
 	}
@@ -173,7 +177,7 @@ public class AdventureMain {
 			break;
 
 		case "break":
-			breakObject(word2);
+			breakObject(word2,word3);
 			break;
 		case "take":
 			takeItem(word2, word3);
@@ -471,7 +475,7 @@ public class AdventureMain {
 		System.out.print("North-n, East-e, West-w, Up-u, Down-d, inventory-i");
 	}
 	
-	void breakObject(String word2) {
+	void breakObject(String word2, String word3) {
 
 		//fix the != ... .equals
 		if (currentRoom !="SecurityRoom") { //&& currentRoom != "electricRoom"???
@@ -482,12 +486,11 @@ public class AdventureMain {
 
 		//you are in the correct room
 
-		if(word2 =="") {
+		if(word2.equals("")||word2.equals("screen")) {
 			System.out.print("Break computer Screen with what?");
 			String comm = getCommand().toLowerCase().trim();
 			word2=comm;
 		}
-		System.out.println(word2);
 		/*else {
 			if (word2 != "")
 				word2=word2 + " ";
@@ -605,7 +608,6 @@ public class AdventureMain {
 				}
 			}
 			currentRoom = r.n;
-			if (currentRoom.equals("cafeteria")&&!cafCameraOff) return false;
 		}
 		if(c == 'n' && r.n == null) System.out.println(message);
 
