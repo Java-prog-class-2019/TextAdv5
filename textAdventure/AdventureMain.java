@@ -151,6 +151,7 @@ public class AdventureMain {
 		case "n": case "s": case "w": case "e": case "u": case "d":
 		case "north": case "south": case "west": case "east": case "up": case "down":
 			boolean b = moveToRoom(word1.charAt(0));
+			System.out.println(b);
 			if (!b) return false;
 			break;
 		case "i": case "inventory":
@@ -438,7 +439,7 @@ public class AdventureMain {
 
 		//you are in the correct room
 
-		if(word2 =="") {
+		if(word2.equals("")) {
 			System.out.print("Break computer Screen with what?");
 			String comm = getCommand().toLowerCase().trim();
 			word2=comm;
