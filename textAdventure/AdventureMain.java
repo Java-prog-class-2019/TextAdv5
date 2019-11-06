@@ -15,10 +15,8 @@ public class AdventureMain {
 
 	//instance variables
 	ArrayList<Doors> doorList=new ArrayList<Doors>();
-	//ArrayList<Room> roomList = new ArrayList<Room>();
 	HashMap<String,Room> roomList = new HashMap<String,Room>();
 	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
-	//ArrayList<String> inventory = new ArrayList<String>();
 
 	String currentRoom;
 	Player player;
@@ -34,10 +32,9 @@ public class AdventureMain {
 	}
 
 	AdventureMain() {
-		//	System.out.println("");
 
 		boolean playing = true;
-		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
+		boolean normClothes = false; //is the user wearing normal clothes or prison clothes
 		String command = "";
 
 		setup(); //create all objects needed, including map; print intro. message
@@ -50,15 +47,13 @@ public class AdventureMain {
 			command = getCommand();
 
 			playing = parseCommand(command);
-			if (!playing) break;
+			
 			//check to see if player has died (in whichever various ways the player can die)
-
-			//;check to see if the player has won the game
+			if (!playing) break;
 			if (currentRoom.equals("GuardRoom")||currentRoom.equals("cafeteria")||currentRoom.equals("OutsideWorld")) {
 				if (currentRoom.equals("GuardRoom")) {
 					playing = false;
 				}
-				//System.out.println(currentRoom);
 				if (currentRoom.equals("cafeteria")&&cafCameraOff==false) {
 					playing=false;
 				}
@@ -69,6 +64,7 @@ public class AdventureMain {
 			}
 			else playing=guardClothes(playing);
 		}
+		//message for player printed out (different if they lose vs. win)
 		endGame();
 	}
 
@@ -78,6 +74,7 @@ public class AdventureMain {
 				"to three years in prison for trespassing in a toothpaste factory. Some helpful friend has managed to smuggle a key into your room and now is your chance to escape."+
 				" Your goals is to break out of prison and win the freedom which has been so long denied of you.";
 		String [] words=welcome.split(" ");
+		//this is just so there is only a certain number of words per line.
 		for (int i=0;i<words.length;i++) {
 			System.out.print(words[i]+" ");
 			if ((i+1)%12==0) System.out.println("");
@@ -86,16 +83,13 @@ public class AdventureMain {
 		Room.setupRooms(roomList,doorList);
 		Item.setUpItems(itemList, roomList);
 		Doors.setUpDoors(doorList);
-		// ... more stuff ...
 		currentRoom = "cell1";
 		player = new Player();
-		//DEBUG
-
-
-
 	}
+	
 	boolean guardClothes(boolean playing) {
 		playing=true;
+		//If the player has not changed into guard clothes by 35 moves, they die. There is a 25 move warning 
 		if (turns==25) {
 			if(!normClothes)System.out.println("Beware: if you do not change out of your prison clothes and into \n"+
 					"other clothes soon you will die");
@@ -121,7 +115,6 @@ public class AdventureMain {
 		text = text.toLowerCase().trim();
 		text = textReplacement(text);
 		if (text.length() == 0) text = "qwerty"; //default command
-		//sc.close();
 		return text;
 	}
 
@@ -201,6 +194,9 @@ public class AdventureMain {
 			break;
 		case "cut":
 			fenceOff = cutWires(word2);
+			break;
+		case "qwerty":
+			System.out.println("Please enter a command. Type \"help\" if you need it.");
 			break;
 		default:
 			System.out.println("Sorry, I don't understand that command");			
