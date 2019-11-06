@@ -46,7 +46,6 @@ public class AdventureMain {
 		/***** MAIN GAME LOOP *****/
 		while (playing) {
 
-
 			command = getCommand();
 
 			playing = parseCommand(command);
@@ -56,7 +55,12 @@ public class AdventureMain {
 			if (currentRoom.equals("Guardroom")) {
 				playing = false;
 			}
-			playing=guardClothes(playing);
+			//System.out.println(currentRoom);
+			if (currentRoom.equals("cafeteria")&&cafCameraOff==false) {
+				playing=false;
+				return;
+			}
+			else playing=guardClothes(playing);
 		}
 		// does anything need to be done after th emain game loop exits?
 	}
@@ -132,7 +136,7 @@ public class AdventureMain {
 		//P3. remove all instances of "THE"
 		ArrayList<String> wordlist = new ArrayList<String>(Arrays.asList(words));		//array list of words
 		for(int i=0; i< wordlist.size(); i++) {
-			if (wordlist.get(i).equals("the")||wordlist.get(i).equals("in")) wordlist.remove(i--);			
+			if (wordlist.get(i).equals("the")||wordlist.get(i).equals("in")||wordlist.get(i).equals("with")) wordlist.remove(i--);			
 		}
 
 		//separate out into word1, word2, etc.
@@ -173,7 +177,7 @@ public class AdventureMain {
 			break;
 
 		case "break":
-			breakObject(word2);
+			breakObject(word2,word3);
 			break;
 		case "take":
 			takeItem(word2, word3);
@@ -229,7 +233,7 @@ public class AdventureMain {
 		text = text.replaceAll("computer screen", "screen");
 		return text;
 	}
-	
+
 
 	private boolean cutWires(String word2) {
 		if (word2 == "") {
@@ -470,8 +474,8 @@ public class AdventureMain {
 		if (!haveKey)System.out.println("Type in \"look here\" to display items in room and tpye in \"take\" to pick up the key. You can then use this to open the door.");
 		System.out.print("North-n, East-e, West-w, Up-u, Down-d, inventory-i");
 	}
-	
-	void breakObject(String word2) {
+
+	void breakObject(String word2, String word3) {
 
 		//fix the != ... .equals
 		if (currentRoom !="SecurityRoom") { //&& currentRoom != "electricRoom"???
@@ -481,13 +485,13 @@ public class AdventureMain {
 		}
 
 		//you are in the correct room
-
-		if(word2 =="") {
-			System.out.print("Break computer Screen with what?");
-			String comm = getCommand().toLowerCase().trim();
-			word2=comm;
+		if (word3.equals("")){
+			if(word2.equals("")||word2.equals("screen")) {
+				System.out.print("Break computer Screen with what?");
+				String comm = getCommand().toLowerCase().trim();
+				word3=comm;
+			}
 		}
-		System.out.println(word2);
 		/*else {
 			if (word2 != "")
 				word2=word2 + " ";
@@ -495,8 +499,8 @@ public class AdventureMain {
 		}*/
 
 		//see if object is in inventory
-		
-		if (word2.equals("axe")) {
+
+		if (word3.equals("axe")) {
 			boolean invFound = false;
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Axe")) invFound=true;
@@ -568,7 +572,7 @@ public class AdventureMain {
 				return true;
 			}
 		}
-		
+
 		if(currentRoom.equals("ExerciseYard") && c=='n') {
 			boolean invFound = false;
 			for (int i = 0; i < player.inventory.size(); i++) {
@@ -587,7 +591,7 @@ public class AdventureMain {
 			else {
 				System.out.println("The electric fence is still on.");
 			}
-			
+
 		}
 
 		//north
@@ -605,7 +609,6 @@ public class AdventureMain {
 				}
 			}
 			currentRoom = r.n;
-			if (currentRoom.equals("cafeteria")&&!cafCameraOff) return false;
 		}
 		if(c == 'n' && r.n == null) System.out.println(message);
 
