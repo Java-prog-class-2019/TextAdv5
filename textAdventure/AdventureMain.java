@@ -506,6 +506,7 @@ public class AdventureMain {
 				System.out.print("Security Cameras and Computer screens smashed with Axe");
 				cafCameraOff=true;
 				roomList.get("cafeteria").descr="There is a security camera, but it is turned off. The room is filled with tables and chairs. \nThere's an avocado on one of the tables! (Crazy!)";
+				roomList.get("SecurityRoom").descr="The computer screens were smashed into pieces by someone...";
 			}
 			else {
 				System.out.println("Sorry, you don't have an axe in your inventory");
