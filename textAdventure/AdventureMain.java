@@ -52,13 +52,15 @@ public class AdventureMain {
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//;check to see if the player has won the game
-			if (currentRoom.equals("Guardroom")) {
-				playing = false;
-			}
-			//System.out.println(currentRoom);
-			if (currentRoom.equals("cafeteria")&&cafCameraOff==false) {
-				playing=false;
-				return;
+			if (currentRoom.equals("GuardRoom")||currentRoom.equals("cafeteria")) {
+				if (currentRoom.equals("GuardRoom")) {
+					playing = false;
+				}
+				//System.out.println(currentRoom);
+				if (currentRoom.equals("cafeteria")&&cafCameraOff==false) {
+					playing=false;
+					return;
+				}
 			}
 			else playing=guardClothes(playing);
 		}
