@@ -26,13 +26,14 @@ public class AdventureMain {
 	int turns = 0;
 	boolean fenceOff = false;
 	boolean normClothes=false;//this is a gloabl variable bc it is used in methods within methods that already return values.
+	boolean cafCameraOff=false;
 
 	public static void main(String[]args){
 		new AdventureMain();
 	}
 
 	AdventureMain() {
-	//	System.out.println("");
+		//	System.out.println("");
 
 		boolean playing = true;
 		boolean normClothes = false; //is the user wearing normal clothese or prison clothes
@@ -63,7 +64,7 @@ public class AdventureMain {
 	void setup() {
 		String welcome="Welcome to Scottsvale Prison in Kerwood, Ontario. Your name is" +
 				" Hergurt Hemsley and you are inmate 120192. You have been injustly sentenced "+
-					"to three years in prison for trespassing in a toothpaste factory. Some helpful friend has managed to smuggle a key into your room and now is your chance to escape."+
+				"to three years in prison for trespassing in a toothpaste factory. Some helpful friend has managed to smuggle a key into your room and now is your chance to escape."+
 				" Your goals is to break out of prison and win the freedom which has been so long denied of you.";
 		String [] words=welcome.split(" ");
 		for (int i=0;i<words.length;i++) {
@@ -136,7 +137,7 @@ public class AdventureMain {
 
 		//separate out into word1, word2, etc.
 		// ...
-		
+
 		String word1 = wordlist.get(0);
 		String word2 = "";
 		String word3 = "";
@@ -201,7 +202,7 @@ public class AdventureMain {
 		}
 		return true;
 	}	
-	
+
 	String textReplacement(String text) {
 		text = text.replaceAll("pick up", "take");
 		text = text.replaceAll("sleepingdust", "sleeping dust");
@@ -224,6 +225,8 @@ public class AdventureMain {
 		text = text.replaceAll("search", "look");
 		text = text.replaceAll("gate", "door");
 		text = text.replaceAll("room", "here");
+		text = text.replaceAll("computer", "screen");
+		text = text.replaceAll("computer screen", "screen");
 		return text;
 	}
 	
@@ -467,10 +470,11 @@ public class AdventureMain {
 		if (!haveKey)System.out.println("Type in \"look here\" to display items in room and tpye in \"take\" to pick up the key. You can then use this to open the door.");
 		System.out.print("North-n, East-e, West-w, Up-u, Down-d, inventory-i");
 	}
-	void breakObject(String  word2) {
+	
+	void breakObject(String word2) {
 
 		//fix the != ... .equals
-		if (currentRoom !="SecurityRoom" && currentRoom != "electricRoom") {
+		if (currentRoom !="SecurityRoom") { //&& currentRoom != "electricRoom"???
 			//are there other rooms where you can break something?
 			System.out.println("There is nothing to break here");
 			return;
@@ -483,27 +487,48 @@ public class AdventureMain {
 			String comm = getCommand().toLowerCase().trim();
 			word2=comm;
 		}
-		else {
+		System.out.println(word2);
+		/*else {
 			if (word2 != "")
 				word2=word2 + " ";
 
-		}
+		}*/
 
 		//see if object is in inventory
-		boolean invFound = false;
-		for (int i = 0; i < player.inventory.size(); i++) {
-			Item item = player.inventory.get(i);
-
-			if (item.name.equalsIgnoreCase(word2)) {				
-				invFound = true;			
-		System.out.print("Security Cameras and Computer screens smashed with Axe");
-		roomList.get("cafeteria").descr="There is a security camera, but it is turned off. The room is filled with tables and chairs. \nThere's an avocado on one of the tables! (Crazy!)";
+		
+		if (word2.equals("axe")) {
+			boolean invFound = false;
+			for (Item inven: player.inventory) {
+				if(inven.name.equals("Axe")) invFound=true;
 			}
-		}
-		if (!invFound) {
-			System.out.println("Sorry, you don't have " + word2 + " in your inventory");
+			System.out.println(invFound);
+			if (invFound) {
+				System.out.print("Security Cameras and Computer screens smashed with Axe");
+				cafCameraOff=true;
+				roomList.get("cafeteria").descr="There is a security camera, but it is turned off. The room is filled with tables and chairs. \nThere's an avocado on one of the tables! (Crazy!)";
+			}
+			else {
+				System.out.println("Sorry, you don't have an axe in your inventory");
+			}
+			/*for (int i = 0; i < player.inventory.size(); i++) {
+				Item item = player.inventory.get(i);
 
+				if (item.name.equalsIgnoreCase(word2)) {				
+					invFound = true;			
+					System.out.print("Security Cameras and Computer screens smashed with Axe");
+					roomList.get("cafeteria").descr="There is a security camera, but it is turned off. The room is filled with tables and chairs. \nThere's an avocado on one of the tables! (Crazy!)";
+				}
+			}
+			if (!invFound) {
+				System.out.println("Sorry, you don't have " + word2 + " in your inventory");
+
+			}*/
 		}
+		else {
+			System.out.println("You cannot break the computer screen with "+word2);
+			return;
+		}
+
 		return;
 		//you have the object and you are in the correct room:
 	}
@@ -514,17 +539,17 @@ public class AdventureMain {
 	void lookAtRoom(boolean showitems) {
 		String text = roomList.get(currentRoom).descr;
 		System.out.println(text);
-		
+
 		//list items in room only if the player types in look		
 		if (showitems){
 			if (roomList.get(currentRoom).items.size() > 0 ) {
-			System.out.println("The room contains:");
-		}
+				System.out.println("The room contains:");
+			}
 			for (Item item : roomList.get(currentRoom).items) {
-			System.out.println(item.name + ": " + item.descr);
+				System.out.println(item.name + ": " + item.descr);
 			}
 		}
-		
+
 	}
 
 	/* This method handles all movement between rooms.
@@ -579,6 +604,7 @@ public class AdventureMain {
 				}
 			}
 			currentRoom = r.n;
+			if (currentRoom.equals("cafeteria")&&!cafCameraOff) return false;
 		}
 		if(c == 'n' && r.n == null) System.out.println(message);
 
