@@ -27,6 +27,7 @@ public class AdventureMain {
 	boolean fenceOff = false;
 	boolean normClothes=false;//this is a gloabl variable bc it is used in methods within methods that already return values.
 	boolean cafCameraOff=false;
+	boolean win=false;
 
 	public static void main(String[]args){
 		new AdventureMain();
@@ -49,22 +50,26 @@ public class AdventureMain {
 			command = getCommand();
 
 			playing = parseCommand(command);
+			if (!playing) break;
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//;check to see if the player has won the game
-			if (currentRoom.equals("GuardRoom")||currentRoom.equals("cafeteria")) {
+			if (currentRoom.equals("GuardRoom")||currentRoom.equals("cafeteria")||currentRoom.equals("OutsideWorld")) {
 				if (currentRoom.equals("GuardRoom")) {
 					playing = false;
 				}
 				//System.out.println(currentRoom);
 				if (currentRoom.equals("cafeteria")&&cafCameraOff==false) {
 					playing=false;
-					return;
+				}
+				if (currentRoom.equals("OutsideWorld")){
+					playing=false;
+					win=true;
 				}
 			}
 			else playing=guardClothes(playing);
 		}
-		// does anything need to be done after th emain game loop exits?
+		endGame();
 	}
 
 	void setup() {
@@ -212,8 +217,8 @@ public class AdventureMain {
 	String textReplacement(String text) {
 		text = text.replaceAll("pick up", "take");
 		text = text.replaceAll("sleepingdust", "sleeping dust");
-		text = text.replaceAll("powder", "dust");
 		text = text.replaceAll("blue dust", "sleeping dust");
+		text = text.replaceAll("blue powder", "sleeping dust");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll(" rocks", " rock");
 		text = text.replaceAll("look at", "lookat");
@@ -232,7 +237,13 @@ public class AdventureMain {
 		text = text.replaceAll("gate", "door");
 		text = text.replaceAll("room", "here");
 		text = text.replaceAll("computer", "screen");
-		text = text.replaceAll("computer screen", "screen");
+		text = text.replaceAll("screen screen", "screen");
+		text = text.replaceAll("powder", "sleeping dust");
+		text = text.replaceAll("sleeping sleeping", "sleeping dust");
+		text = text.replaceAll("behind the bed", "here");
+		text = text.replaceAll("behind bed", "here");
+		text = text.replaceAll("clip", "cut");
+		text = text.replaceAll("wirecutpers", "wireclippers");//because of above replacement that is what wireclippers becomes This is what changes it back so that you can still take them
 		return text;
 	}
 
@@ -248,7 +259,7 @@ public class AdventureMain {
 		if(word2.equals("wires") || word2.equals("wire")) {
 			for (int i = 0; i < player.inventory.size(); i++) {
 				Item item = player.inventory.get(i);			
-				if (item.name.equals("Wire Clippers")) {
+				if (item.name.equalsIgnoreCase("wireclippers")) {
 					found = true;
 					if(r.name=="Electric room") {
 						System.out.println("You cut wires with wire clippers. The electric fence is now off. RUN FOR YOUR FREEDOM!");
@@ -724,6 +735,18 @@ public class AdventureMain {
 			return a;
 		}
 		return false;
+	}
+	void endGame() {
+		if (win) {
+			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
+			lookAtRoom(false);
+			System.out.println("Congratulations! You won the game! You are incredible, phenominal, \n"+
+					"absolutely extraordinary. Annnnnddd you won in ONLY " + turns + " moves. That is truly\n"+
+					"a feat to be proud of. You have escaped, now go and enjoy freedom, and say farewell to \n" +
+					"your toothpaste tresspassing past. Now is your time to show the world who you really are. \n"+
+					"You are going to do fantastic things in the world, all you have to do is believe in yourself.");
+		}
+		else System.out.println("Sorry, you lost. \\_o_/\nGuess you're going to have to try again.");
 	}
 
 }

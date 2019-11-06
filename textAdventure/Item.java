@@ -23,7 +23,7 @@ class Item {
 		
 		Item chair = new Item("Chair", "A well crafted chair that looks very durable.");
 		
-		Item wireClippers = new Item("Wire Clippers", "A shiny pair of wire clippers which look sharp enough to disable the electric fence computers.");
+		Item wireClippers = new Item("Wireclippers", "A shiny pair of wire clippers which look sharp enough to disable the electric fence computers.");
 		
 		Item keycard = new Item("Keycard", "A keycard that can be used to unlock a door.");
 		

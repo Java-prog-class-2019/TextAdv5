@@ -94,7 +94,7 @@ class Room {
 		r.n="hallway6";
 		roomList.put("cell2", r);
 		//cell3
-		r=new Room("Empty Cell","You are in an empty cell. From the behind the bes you can see something shiny glinting."); //need command like "look in corner". Also do we want to take the word in out of commands as well as the???
+		r=new Room("Empty Cell","You are in an empty cell. From the behind the bed you can see something shiny glinting."); //need command like "look in corner". Also do we want to take the word in out of commands as well as the???
 		r.n="hallway7";
 		roomList.put("cell3", r);
 		//Security Room
