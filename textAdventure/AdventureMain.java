@@ -158,6 +158,7 @@ public class AdventureMain {
 			break;
 		case "help":
 			printHelp();
+			turns--;
 			break;
 			/**** two word commands ****/		
 		case "look":
@@ -215,6 +216,7 @@ public class AdventureMain {
 		text = text.replaceAll(" rocks", " rock");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
+		text = text.replaceAll("climbup","up");
 		text = text.replaceAll("open", "unlock");
 		text = text.replaceAll("move", ""); //so it will work if the user types move north instead of just north
 		text = text.replaceAll("go", "");
@@ -239,6 +241,10 @@ public class AdventureMain {
 		text = text.replaceAll("pickup", "take");
 		text = text.replaceAll("bottle", "sleeping dust");
 		text = text.replaceAll("swipe", "unlock");
+		text = text.replaceAll("use axe", "break");
+		text = text.replaceAll("climb","up");
+		text = text.replaceAll("use keycard", "unlock door");
+		text = text.replaceAll("use key", "unlock door");
 		text = text.replaceAll("wirecutpers", "wireclippers");//because of above replacement that is what wireclippers becomes This is what changes it back so that you can still take them
 		return text;
 	}
@@ -266,7 +272,7 @@ public class AdventureMain {
 						//change the exits in the room where the electric fence is to allow people to leave. Excercise Yard and also change the description
 						Room r2 = roomList.get("ExerciseYard");
 						r2.descr = "You are in a grassy field. A tall electric fence on the north side of the field separates you from the outside world. However, it seems to be turned off.";
-						r2.n="OutsideWorld";
+						r2.u="OutsideWorld";
 						return true;
 					}else {							
 						System.out.println("There is no wire to cut here.");
@@ -326,7 +332,7 @@ public class AdventureMain {
 		}
 		// you use the sleeping gas, nothing happens, your gas is gone.
 		if(roomList.get(currentRoom).guard == Room.SLEEPINGGUARD) {
-			if(roomList.get(currentRoom).name == "hallway5") {
+			if(roomList.get(currentRoom).name.equals("hallway5")) {
 				System.out.println("...");
 			}
 		}
@@ -344,14 +350,10 @@ public class AdventureMain {
 	}
 
 	private void takeItem(String word2, String word3) {
-		if (word2 == "") {
+		if (word2.equals("")) {
 			System.out.print("take what? ");			
 			String comm = getCommand().toLowerCase().trim();
 			word2 = comm;
-			//				if (word2=="key") {
-			//					 Item key = roomList.get("cell1").items.get(0);
-			//						player.inventory.add(key);
-			//				}
 		} else {
 			if (word3 != "")	word2 = word2 + " " + word3;
 		}
@@ -494,7 +496,7 @@ public class AdventureMain {
 	void breakObject(String word2, String word3) {
 
 		//fix the != ... .equals
-		if (currentRoom !="SecurityRoom") { //&& currentRoom != "electricRoom"???
+		if (currentRoom!="SecurityRoom") { //Ik this isn't supposed to work for strings, but it does here
 			//are there other rooms where you can break something?
 			System.out.println("There is nothing to break here");
 			return;
@@ -508,11 +510,6 @@ public class AdventureMain {
 				word3=comm;
 			}
 		}
-		/*else {
-			if (word2 != "")
-				word2=word2 + " ";
-
-		}*/
 
 		//see if object is in inventory
 
@@ -521,7 +518,6 @@ public class AdventureMain {
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Axe")) invFound=true;
 			}
-			System.out.println(invFound);
 			if (invFound) {
 				System.out.print("Security Cameras and Computer screens smashed with Axe");
 				cafCameraOff=true;
@@ -531,19 +527,6 @@ public class AdventureMain {
 			else {
 				System.out.println("Sorry, you don't have an axe in your inventory");
 			}
-			/*for (int i = 0; i < player.inventory.size(); i++) {
-				Item item = player.inventory.get(i);
-
-				if (item.name.equalsIgnoreCase(word2)) {				
-					invFound = true;			
-					System.out.print("Security Cameras and Computer screens smashed with Axe");
-					roomList.get("cafeteria").descr="There is a security camera, but it is turned off. The room is filled with tables and chairs. \nThere's an avocado on one of the tables! (Crazy!)";
-				}
-			}
-			if (!invFound) {
-				System.out.println("Sorry, you don't have " + word2 + " in your inventory");
-
-			}*/
 		}
 		else {
 			System.out.println("You cannot break the computer screen with "+word2);
@@ -589,14 +572,14 @@ public class AdventureMain {
 			}
 		}
 
-		if(currentRoom.equals("ExerciseYard") && c=='n') {
+		if(currentRoom.equals("ExerciseYard") && c=='u') {
 			boolean invFound = false;
 			for (int i = 0; i < player.inventory.size(); i++) {
 				Item item = player.inventory.get(i);
 				if (item.name.equalsIgnoreCase("Chair")) invFound = true;					
 			}
 			if(invFound && fenceOff) {
-				currentRoom = r.n;
+				currentRoom = r.u;
 				lookAtRoom(true);
 				return true;
 			}
@@ -668,6 +651,11 @@ public class AdventureMain {
 		return true;
 	}
 	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
+		if (w2.equals("")) {
+			System.out.print("take what? ");			
+			String comm = getCommand().toLowerCase().trim();
+			w2 = comm;
+		}
 		if (w2.equals("door")) {
 			//cell door
 			//are they in the cell or the hallway outside it?
@@ -677,14 +665,11 @@ public class AdventureMain {
 				if(inven.name.equals("Key")) haveKey=true;
 				if (inven.name.equals("Keycard")) haveKeyCard=true;
 			}
-			Room r = roomList.get(currentRoom);
-			if (haveKey) {
-				r.descr = "This was your orignial cell";
-			}
 			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 				if (haveKey) {
 					doorList.get(0).unlocked=true;
 					System.out.print("Door unlocked");
+					roomList.get(currentRoom).descr="This was your original cell";
 				}
 				else System.out.print("You don't have a key");
 			}
@@ -692,6 +677,7 @@ public class AdventureMain {
 				if (haveKeyCard) {
 					doorList.get(1).unlocked=true;
 					System.out.print("Door unlocked");
+					roomList.get(currentRoom).descr="There is a cafeteria to the north.";
 				}
 				else System.out.println("You need a guard's key card to unlock this.");
 			}
@@ -699,6 +685,7 @@ public class AdventureMain {
 				if (haveKeyCard) {
 					doorList.get(2).unlocked=true;
 					System.out.print("Door unlocked");
+					roomList.get(currentRoom).descr="There is hallway to the east and west.";
 				}
 				else System.out.println("You need a guard's key card to unlock this.");
 			}
