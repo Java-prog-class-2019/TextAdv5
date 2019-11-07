@@ -5,7 +5,8 @@ import java.util.ArrayList;
 class Doors {
 	
 	boolean unlocked;
-	String loc1;
+	//locations on either side of the door
+	String loc1; 
 	String loc2;
 	
 	//constructor

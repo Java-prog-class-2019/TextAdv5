@@ -1,17 +1,16 @@
+/********Break out of Prison Game*******/
+/* Text Adventure Group 5: Freyja, Tianqi, Chibuke, Ite
+ * 11/07/19
+ */
+
 package textAdventure;
 
-//import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
-/* A skeleton program for a text adventure game */
-/* some other parts, like rooms, will be explained in class */
-
 public class AdventureMain {
-
-	static int INVSIZE = 10; //size of inventory	
 
 	//instance variables
 	ArrayList<Doors> doorList=new ArrayList<Doors>();
@@ -245,6 +244,7 @@ public class AdventureMain {
 		text = text.replaceAll("climb","up");
 		text = text.replaceAll("use keycard", "unlock door");
 		text = text.replaceAll("use key", "unlock door");
+		text = text.replaceAll("show inventory", "i");
 		text = text.replaceAll("wirecutpers", "wireclippers");//because of above replacement that is what wireclippers becomes This is what changes it back so that you can still take them
 		return text;
 	}
@@ -339,7 +339,8 @@ public class AdventureMain {
 
 
 	}
-
+	
+	//handles case if the user wants to quit
 	private void quitGame() {
 		System.out.print("Do you really want to quit the game? ");
 		String ans = getCommand().toUpperCase();
@@ -348,7 +349,8 @@ public class AdventureMain {
 			System.exit(0);
 		}	
 	}
-
+	
+	//allows use to take items out of rooms
 	private void takeItem(String word2, String word3) {
 		if (word2.equals("")) {
 			System.out.print("take what? ");			
@@ -358,18 +360,12 @@ public class AdventureMain {
 			if (word3 != "")	word2 = word2 + " " + word3;
 		}
 
-		//does current room contain item
-		// roomList.get(currentRoom).items  < -- this is the item list for the current rooom
-
 		int numItems = roomList.get(currentRoom).items.size();
-		//System.out.print("=="+word2+);
 
 		//find item in the room
 		boolean found = false;
 		for (int i = 0; i < numItems; i++ ) {
 			Item item = roomList.get(currentRoom).items.get(i);
-
-			//fix if statement to handle "wire clippers" <--space must be removed from name and word2 ???
 			if (item.name.equalsIgnoreCase(word2)) {
 				player.inventory.add(item);
 				if (item.name.equals("Wire Clippers"))roomList.get("storage1").descr="You are in a storage room.";
@@ -384,7 +380,8 @@ public class AdventureMain {
 		if (!found) System.out.println("There is no " + word2 + " here.");
 
 	}
-
+	
+	//allows player to look around them or look in the room they are in
 	private void look(String word2) {
 		String com="";
 		if (word2=="") {
@@ -393,12 +390,9 @@ public class AdventureMain {
 			com = textReplacement(com);
 		}
 		else com=word2;
-
-
 		if (com.equals("here")) {
 			lookAtRoom(true);
 		}
-
 		if (com.equals("n") || com.equals("north")) {
 			if (roomList.get(currentRoom).n != null) {
 				String room=roomList.get(currentRoom).n;
@@ -441,12 +435,9 @@ public class AdventureMain {
 			}
 			else System.out.println("There is no room below you.");
 		}
-
-
 	}
 
-
-
+	//allows user to drop an item in a room
 	private void dropItem(String word2, String word3) {
 		if (word2 == "") {
 			System.out.print("drop what? ");
@@ -471,9 +462,9 @@ public class AdventureMain {
 		System.out.println("You don't have the " + word2);
 
 	}
-
-	private void showInventory() {
-		//System.out.print(Arrays.toString(player.inventory));				
+	
+	//if the user types in "i" it shows their inventory
+	private void showInventory() {				
 		if (player.inventory.size() == 0) {
 			System.out.println("There is nothing in the inventory.");
 			return;
@@ -483,21 +474,20 @@ public class AdventureMain {
 			System.out.println(inven.name);
 		}
 	}
-
+	
+	//if the user types in help it will go to this method
 	private void printHelp() {
 		boolean haveKey=false;
 		for (Item inven: player.inventory) {
 			if(inven.name.equals("Key")) haveKey=true;
 		}
+		//if the user is stuck in there cell and hasn't even got the key yet.
 		if (!haveKey)System.out.println("Type in \"look here\" to display items in room and tpye in \"take\" to pick up the key. \nYou can then use this to open the door.");
 		System.out.print("North-n, East-e, West-w, Up-u, Down-d, inventory-i");
 	}
 
 	void breakObject(String word2, String word3) {
-
-		//fix the != ... .equals
 		if (currentRoom!="SecurityRoom") { //Ik this isn't supposed to work for strings, but it does here
-			//are there other rooms where you can break something?
 			System.out.println("There is nothing to break here");
 			return;
 		}
@@ -512,7 +502,6 @@ public class AdventureMain {
 		}
 
 		//see if object is in inventory
-
 		if (word3.equals("axe")) {
 			boolean invFound = false;
 			for (Item inven: player.inventory) {
@@ -532,14 +521,10 @@ public class AdventureMain {
 			System.out.println("You cannot break the computer screen with "+word2);
 			return;
 		}
-
 		return;
 		//you have the object and you are in the correct room:
 	}
-
-
-
-	//tons of other methods go here ...		
+	
 	void lookAtRoom(boolean showitems) {
 		String text = roomList.get(currentRoom).descr;
 		System.out.println(text);
@@ -558,7 +543,7 @@ public class AdventureMain {
 
 	/* This method handles all movement between rooms.
 	 * It takes a single character for direction (n,w,e,su,d)
-	 * It returns a boolean: true means 		false means
+	 * It returns a boolean: true means continue playing false means no longer playing
 	 */
 	boolean moveToRoom(char c) {
 		Room r = roomList.get(currentRoom);
@@ -650,6 +635,8 @@ public class AdventureMain {
 		lookAtRoom(false);
 		return true;
 	}
+	
+	//allows user to open door
 	void unlock(String w2, String w3, ArrayList<Doors>doorList) {
 		if (w2.equals("")) {
 			System.out.print("take what? ");			
@@ -657,14 +644,14 @@ public class AdventureMain {
 			w2 = comm;
 		}
 		if (w2.equals("door")) {
-			//cell door
-			//are they in the cell or the hallway outside it?
+			//do they have the key/keycard
 			boolean haveKey=false;
 			boolean haveKeyCard=false;
 			for (Item inven: player.inventory) {
 				if(inven.name.equals("Key")) haveKey=true;
 				if (inven.name.equals("Keycard")) haveKeyCard=true;
 			}
+			//cell door -->need key
 			if(currentRoom.equals(doorList.get(0).loc1)||currentRoom.equals(doorList.get(0).loc2)) {
 				if (haveKey) {
 					doorList.get(0).unlocked=true;
@@ -673,6 +660,7 @@ public class AdventureMain {
 				}
 				else System.out.print("You don't have a key");
 			}
+			//caf door -->need keycard
 			else if (currentRoom.equals(doorList.get(1).loc1)||currentRoom.equals(doorList.get(1).loc2)) {
 				if (haveKeyCard) {
 					doorList.get(1).unlocked=true;
@@ -681,6 +669,7 @@ public class AdventureMain {
 				}
 				else System.out.println("You need a guard's key card to unlock this.");
 			}
+			//basement door --> need keycard
 			else if (currentRoom.equals(doorList.get(2).loc1)||currentRoom.equals(doorList.get(2).loc2)) {
 				if (haveKeyCard) {
 					doorList.get(2).unlocked=true;
@@ -702,12 +691,10 @@ public class AdventureMain {
 			System.out.println("The guard kills you");
 			return false;			
 		}
-
 		return true;		
-
-
 	}
-
+	
+	//allows user to change clothes so they won't die at 35 turns
 	boolean changeClothes(String w2) {
 		if (w2.equals("clothes")) {
 			boolean a=false;
@@ -726,6 +713,8 @@ public class AdventureMain {
 		}
 		return false;
 	}
+	
+	//message printed out at end of game
 	void endGame() {
 		if (win) {
 			System.out.println("\n== " + roomList.get(currentRoom).name + " ==");
