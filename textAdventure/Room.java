@@ -127,7 +127,7 @@ class Room {
 		// stairs
 		r=new Room("Stairs","You are at the bottom of the staircase. There is a dark-lit, dusty storage room east of you.");
 		r.e="storage1";
-		r.u="hallway8";
+		r.u="hallway9";
 		roomList.put("stairs", r);
 		
 		r=new Room("Storage room","You are in the storage room. There are three rooms nearbye \nand stairs to the west. You see a wireclipper on a rusty rack.");

@@ -191,9 +191,11 @@ public class AdventureMain {
 			break;
 		case "qwerty":
 			System.out.println("Please enter a command. Type \"help\" if you need it.");
+			turns--;
 			break;
 		default:
-			System.out.println("Sorry, I don't understand that command");			
+			System.out.println("Sorry, I don't understand that command");
+			turns--; //you shouldn't get penalized for entering a command that doesn't work.
 		}
 		turns++;
 		System.out.println("\nmoves: "+turns);
@@ -233,6 +235,10 @@ public class AdventureMain {
 		text = text.replaceAll("behind the bed", "here");
 		text = text.replaceAll("behind bed", "here");
 		text = text.replaceAll("clip", "cut");
+		text = text.replaceAll("wear","change");
+		text = text.replaceAll("pickup", "take");
+		text = text.replaceAll("bottle", "sleeping dust");
+		text = text.replaceAll("swipe", "unlock");
 		text = text.replaceAll("wirecutpers", "wireclippers");//because of above replacement that is what wireclippers becomes This is what changes it back so that you can still take them
 		return text;
 	}
@@ -382,6 +388,7 @@ public class AdventureMain {
 		if (word2=="") {
 			System.out.print("look where?");
 			com = getCommand().toLowerCase();
+			com = textReplacement(com);
 		}
 		else com=word2;
 
@@ -390,42 +397,42 @@ public class AdventureMain {
 			lookAtRoom(true);
 		}
 
-		if (com.equals("n") || com.equals("look n")) {
+		if (com.equals("n") || com.equals("north")) {
 			if (roomList.get(currentRoom).n != null) {
 				String room=roomList.get(currentRoom).n;
 				System.out.print("There is " + roomList.get(room).name + " north of you");
 			}
 			else System.out.println("There is no room north of you.");
 		}
-		if (com.equals("s") || com.equals ("look s")) {
+		if (com.equals("s") || com.equals ("south")) {
 			if (roomList.get(currentRoom).s != null) {
 				String room=roomList.get(currentRoom).s;
 				System.out.print("There is " + roomList.get(room).name + " south of you");
 			}
 			else System.out.println("There is no room south of you.");
 		}
-		if (com.equals("e") || com.equals("look e")) {
+		if (com.equals("e") || com.equals("east")) {
 			if (roomList.get(currentRoom).e != null) {
 				String room=roomList.get(currentRoom).e;
 				System.out.print("There is " + roomList.get(room).name + " east of you");
 			}
 			else System.out.println("There is no room east of you.");
 		}
-		if (com.equals("w") || com.equals("look w")) {
+		if (com.equals("w") || com.equals("west")) {
 			if (roomList.get(currentRoom).w != null) {
 				String room=roomList.get(currentRoom).w;
 				System.out.print("There is " + roomList.get(room).name + " west of you");
 			}
 			else System.out.println("There is no room west of you.");
 		}
-		if (com.equals("u") || com.equals("look u")) {
+		if (com.equals("u") || com.equals("up")) {
 			if (roomList.get(currentRoom).u != null) {
 				String room=roomList.get(currentRoom).u;
 				System.out.print("There is " + roomList.get(room).name + " above you");
 			}
 			else System.out.println("There is no room above you.");
 		}
-		if (com.equals("d") || com.equals("look down")) {
+		if (com.equals("d") || com.equals("down")) {
 			if (roomList.get(currentRoom).d != null) {
 				String room=roomList.get(currentRoom).d;
 				System.out.print("There is " + roomList.get(room).name + " below you");
@@ -480,7 +487,7 @@ public class AdventureMain {
 		for (Item inven: player.inventory) {
 			if(inven.name.equals("Key")) haveKey=true;
 		}
-		if (!haveKey)System.out.println("Type in \"look here\" to display items in room and tpye in \"take\" to pick up the key. You can then use this to open the door.");
+		if (!haveKey)System.out.println("Type in \"look here\" to display items in room and tpye in \"take\" to pick up the key. \nYou can then use this to open the door.");
 		System.out.print("North-n, East-e, West-w, Up-u, Down-d, inventory-i");
 	}
 
