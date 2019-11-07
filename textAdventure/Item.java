@@ -13,6 +13,7 @@ class Item {
 		descr = s2;
 	}
 	static void setUpItems(HashMap<String,Item> itemList, HashMap<String,Room> roomList) {
+		//Items in game
 		Item key = new Item("Key", "A key that can be used to unlock your cellblock.");
 		
 		Item sleepingDust = new Item("Sleeping Dust", "A magic sleeping dust that can put a person to sleep.");
@@ -28,9 +29,10 @@ class Item {
 		Item keycard = new Item("Keycard", "A keycard that can be used to unlock a door.");
 		
 		Item avocado = new Item("Avocado", "A delishous looking vegetable specimen of bright green hue.");
-
+		
+		//Adding Items to specific rooms
 		Room r = roomList.get("cell1");
-		r.items.add(key);	//and here the item is added to the specific room that you want it in.
+		r.items.add(key);	
 		
 		r = roomList.get("cell2");
 		r.items.add(sleepingDust);
@@ -51,7 +53,7 @@ class Item {
 		r.items.add(keycard);
 		
 		r = roomList.get("cafeteria");
-		r.items.add(avocado);
+		r.items.add(avocado); //this isn't used for anything, but why not.
 		
 		
 	}
